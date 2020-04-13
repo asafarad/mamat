@@ -1,0 +1,14 @@
+#!/bin/bash
+log_file=$1
+prog_file=$2
+input_file=$3
+
+valgrind --tool=memcheck "$2" < "$3" 2> "$1" > /dev/null
+a=`grep -e "0 errors" $1`
+if [[ ! $a ]]; then
+	echo "Memory test failed"
+	exit 1
+else	
+	echo "Memory test passed"
+	exit 0
+fi

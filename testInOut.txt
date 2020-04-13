@@ -1,0 +1,16 @@
+#!/bin/bash
+
+log_file = $1
+prog_file = $2
+input_file = $3
+output_file = $4
+
+${prog_file} > ${log_file} < ${input_file}
+a='diff ${log_file} ${output_file}
+if [[ !a ]]; then
+	echo 'Out files match'
+	exit 0
+else
+	echo 'Out files mismatch'
+	exit 1
+fi
