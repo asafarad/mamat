@@ -1,0 +1,41 @@
+#!/bin/bash
+if [[ -d logFiles ]]; then
+	echo "error"
+	exit 1
+fi
+mkdir logFiles
+lineNum=1
+successNum=0
+checkNum=0
+
+while IFS=@ read -a line; do
+  if [[ -z ${line} ]]; then
+    continue
+  fi
+	checkName=${line[0]}
+	progName=${line[1]}
+	input=${line[2]}
+	output=${line[3]}
+	echo "${lineNum}: ${checkName}"
+
+	testCompile.txt ./logFiles/${lineNum}.compile.log ${progName}
+	if (( $?==0 )); then
+    ((successNum++))
+  fi
+	((checkNum++))
+	testInOut.sh ./logFiles/${lineNum}.inout.log ${progName} ${input} ${output}
+	if (( $?==0 )); then
+    ((successNum++))
+  fi
+  
+	((checkNum++))
+	testMem.sh ./logFiles/${lineNum}.memory.log ${progName} ${input}
+	if (( $?==0 )); then
+    ((successNum++))
+  fi
+	((checkNum++))
+	((lineNum++))
+done < $1
+echo "${successNum} tests passed out of ${checkNum}"
+exit 0
+
