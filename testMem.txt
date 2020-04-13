@@ -1,14 +1,24 @@
 #!/bin/bash
+#*****************************************************************************
+#* Function name  : TestMem
+#* Description    : Run program with input file using valgrind tool to test
+#*					memory usage of program, and save its output in log file
+#* Parameters	  : $1 - log file to save valgrind output
+#*					$2 - program to run
+#*					$3 - input file for the program
+#* Return Value   : None
+#*****************************************************************************
 log_file=$1
 prog_file=$2
 input_file=$3
-
-valgrind --tool=memcheck "$2" < "$3" 2> "$1" > /dev/null
-a=`grep -e "0 errors" $1`
-if [[ ! $a ]]; then
+# run program in valgrind with input, save program output in null and log output in log file
+valgrind --tool=memcheck "${prog_file}" < "${input_file}" 2> "${log_file}" > /dev/null
+# find the summary line in valgrind log output
+a=`grep -e "0 errors" ${log_file}`
+if [[ ! $a ]]; then # if didn't find 0 errors in summary line- there are memory errors
 	echo "Memory test failed"
 	exit 1
-else	
+else # found 0 errors in summery line- no errors
 	echo "Memory test passed"
 	exit 0
 fi
