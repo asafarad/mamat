@@ -1,2 +1,0 @@
-# mamat
-mamat homeworks

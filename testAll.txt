@@ -1,39 +1,49 @@
 #!/bin/bash
+#*****************************************************************************
+#* Function name  : TestAll
+#* Description    : Run 3 tests on a given tests list- testCompile, testInOut,
+#*					and testMem. print number of test passed
+#* Parameters	  : $1 - file contains the tests list
+#* Return Value   : None
+#*****************************************************************************
 if [[ -d logFiles ]]; then
-	echo "error"
+	echo "error" # logFiles dir exists- no need to run tests
 	exit 1
 fi
 mkdir logFiles
+# initial counters for line number, num of tests and num of tests succeeded
 lineNum=1
 successNum=0
 checkNum=0
 
-while IFS=@ read -a line; do
-  if [[ -z ${line} ]]; then
-    continue
-  fi
+while IFS=@ read -a line; do # each parameter in the line is seperated by '@'
+	if [[ -z ${line} ]]; then # line is empty- skip the line
+		continue
+	fi
 	checkName=${line[0]}
 	progName=${line[1]}
 	input=${line[2]}
 	output=${line[3]}
 	echo "${lineNum}: ${checkName}"
-
+	# first test- compilation
 	testCompile.txt ./logFiles/${lineNum}.compile.log ${progName}
 	if (( $?==0 )); then
-    ((successNum++))
-  fi
+		((successNum++))
+	fi
 	((checkNum++))
-	testInOut.sh ./logFiles/${lineNum}.inout.log ${progName} ${input} ${output}
+	# second test- input output
+	testInOut.txt ./logFiles/${lineNum}.inout.log ${progName} ${input} ${output}
 	if (( $?==0 )); then
-    ((successNum++))
-  fi
-  
+    	((successNum++))
+	fi
 	((checkNum++))
-	testMem.sh ./logFiles/${lineNum}.memory.log ${progName} ${input}
+	# third test- memory
+	testMem.txt ./logFiles/${lineNum}.memory.log ${progName} ${input}
 	if (( $?==0 )); then
-    ((successNum++))
-  fi
+		((successNum++))
+	fi
 	((checkNum++))
+
 	((lineNum++))
 done < $1
 echo "${successNum} tests passed out of ${checkNum}"
