@@ -1,0 +1,11 @@
+#!/bin/bash
+
+gcc -Wall -o $2 $2.c 2> $1
+a=`grep -e "error" -e "warning" $1`
+if [[ !$a ]]; then
+	echo "Compile succeeded"
+	exit 0
+else 
+	echo "Compile failed"
+	exit 1
+fi
