@@ -1,12 +1,24 @@
 #!/bin/bash
 
-log_file = $1
-prog_file = $2
-input_file = $3
-output_file = $4
+#****************************************************
+#Function name: testInOut
+#Description: This function runs a program with a given input, and then compares the log that we recieve with a given desired output
+#Paramaters: 1 - log file that contains the output of our program
+#2 - the program that we shall run
+#3 - a file that we will use as an input for the program
+#4 - the output that we are supposed to receive
+#Return value: 0 if the log file turns out to be the same as the desired output ("out files math") and 1 if it doesn't ("Out files mismatch").
+#****************************************************
 
+log_file=$1
+prog_file=$2
+input_file=$3
+output_file=$4
+
+#Run the program wth given input, and put the results into the log file:
 ${prog_file} > ${log_file} < ${input_file}
-a='diff ${log_file} ${output_file}
+#Compare the log file and the desired output:
+a=`diff ${log_file} ${output_file}`
 if [[ !a ]]; then
 	echo 'Out files match'
 	exit 0
