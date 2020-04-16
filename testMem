@@ -2,23 +2,24 @@
 #*****************************************************************************
 #* Function name  : TestMem
 #* Description    : Run program with input file using valgrind tool to test
-#*					memory usage of program, and save its output in log file.
+#*					memory usage of program including error and leaks, and save its output in log file.
 #* Parameters	  : $1 - log file to save valgrind output
 #*					$2 - program to run
 #*					$3 - input file for the program
-#* Return Value   : 0 if the memery check in valgrind passed. 1 if the memory check failed.
+#* Return Value   : 0 if the memery check in valgrind passed. 1 if the memory check failed- there is an error or leak
 #*****************************************************************************
 log_file=$1
 prog_file=$2
 input_file=$3
 # run program in valgrind with input, save program output in null and log output in log file
-valgrind --tool=memcheck "${prog_file}" < "${input_file}" 2> "${log_file}" > /dev/null
-# find the summary line in valgrind log output
-a=`grep -e "0 errors" ${log_file}`
-if [[ ! $a ]]; then # if didn't find 0 errors in summary line- there are memory errors
+valgrind --tool=memcheck "./${prog_file}" < "${input_file}" 2> "${log_file}" > /dev/null
+# find the summary lines in valgrind log output(error and leak summary)
+a=`grep -e "ERROR SUMMARY: 0 errors" ${log_file}` # check for no memory errors
+b=`grep -e "LEAK SUMMARY" ${log_file}` # check for leak of memory in heap
+if [[ ! $a || $b ]]; then # if didn't find 0 errors in error summary or found leak summary line- there are memory errors
 	echo "Memory test failed"
 	exit 1
-else # found 0 errors in summary line- no errors
+else # found 0 errors in summary line and no leaks error- no errors
 	echo "Memory test passed"
 	exit 0
 fi
