@@ -2,9 +2,10 @@
 #*****************************************************************************
 #* Function name  : TestAll
 #* Description    : Run 3 tests on a given tests list- testCompile, testInOut,
-#*					and testMem. print number of test passed
+#*					and testMem. print number of test passed.
 #* Parameters	  : $1 - file contains the tests list
-#* Return Value   : None
+#* Return Value   : 1 if the lofFiles dir exists and no tests need to run. 
+#*          0 if the tests were running and output number of tests passed.
 #*****************************************************************************
 if [[ -d logFiles ]]; then
 	echo "error" # logFiles dir exists- no need to run tests
@@ -26,25 +27,25 @@ while IFS=@ read -a line; do # each parameter in the line is seperated by '@'
 	output=${line[3]}
 	echo "${lineNum}: ${checkName}"
 	# first test- compilation
-	testCompile.txt ./logFiles/${lineNum}.compile.log ${progName}
+	testCompile ./logFiles/${lineNum}.compile.log ${progName}
 	if (( $?==0 )); then
 		((successNum++))
 	fi
 	((checkNum++))
 	# second test- input output
-	testInOut.txt ./logFiles/${lineNum}.inout.log ${progName} ${input} ${output}
+	testInOut ./logFiles/${lineNum}.inout.log ${progName} ${input} ${output}
 	if (( $?==0 )); then
     	((successNum++))
 	fi
 	((checkNum++))
 	# third test- memory
-	testMem.txt ./logFiles/${lineNum}.memory.log ${progName} ${input}
+	testMem ./logFiles/${lineNum}.memory.log ${progName} ${input}
 	if (( $?==0 )); then
 		((successNum++))
 	fi
 	((checkNum++))
 
-	((lineNum++))
+	((lineNum++)) # increment to get the next line
 done < $1
 echo "${successNum} tests passed out of ${checkNum}"
 exit 0

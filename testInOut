@@ -19,7 +19,7 @@ output_file=$4
 ${prog_file} > ${log_file} < ${input_file}
 #Compare the log file and the desired output:
 a=`diff ${log_file} ${output_file}`
-if [[ !a ]]; then
+if [[ ! $a ]]; then
 	echo 'Out files match'
 	exit 0
 else
