@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "party.h"
+#include "voter.h"
 
 #define MAX_PARTY_NAME      20
 
@@ -61,11 +62,11 @@ static Party* PartyList = NULL;
 
 char* AddVote(char* pPartyName)
 {
-    bool IsExist = false;
-    Party* currParty;
+    bool IsExist = FALSE;
+    Party* currParty = NULL;
     for (Party* pParty = PartyList; pParty; pParty = pParty->pNext) {
         if (!strcmp(pPartyName, pParty->Party)) {
-            IsExist = true;
+            IsExist = TRUE;
             currParty = pParty;
         }
     }
@@ -82,10 +83,11 @@ char* AddVote(char* pPartyName)
         Party* newParty;
         newParty = (Party*)malloc(sizeof(Party));
         if (newParty == NULL) {
-            printf("Allocation error");
-            exit (1);
+            FreeVoters();
+            FreeParties();
+            exit (-1);
         }
-        strcpy_s(newParty->Party, MAX_PARTY_NAME, pPartyName);
+        strcpy_s(newParty->Party, MAX_PARTY_NAME, pPartyName); //TODO - CHANGE THE STRCPY_S WITH STRCPY
         newParty->NumVoters = 1;
         newParty->pNext = PartyList;
         PartyList = newParty;
@@ -110,6 +112,13 @@ char* AddVote(char* pPartyName)
 */
 void FreeParties()
 {
+    Party* CurrParty = NULL;
+
+    while (PartyList != NULL) {
+        CurrParty = PartyList;
+        PartyList = PartyList->pNext;
+        free(CurrParty);
+    }
 }
 
 

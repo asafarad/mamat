@@ -14,6 +14,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "voter.h"
+#include "party.h"
 
 
 /*
@@ -55,7 +56,58 @@ static Voter* VoterList = NULL;
 */
 void AddVoter(char* pName, char* pSurname, int ID, char* pParty)
 {
-}
+    bool IsExist = FALSE;
+    Voter* currVoter = NULL;
+ /*   for (Voter* pVoter = VoterList; pVoter; pVoter = pVoter->pNext) {
+      if (!strcmp(ID, pVoter->ID)) {
+         IsExist = TRUE;
+       
+       }
+  */  
+       
+    Voter* NewVoter;
+    NewVoter = (Voter*)malloc(sizeof(Voter));
+    if (NewVoter == NULL) {
+        FreeVoters();
+        FreeParties();
+        exit(-1);
+    }
+    char* buffName;
+    int pNameLen = strlen(pName);
+    int pSurnameLen = strlen(pSurname);
+    int totLen = pNameLen + pSurnameLen + 1;
+    buffName = (char*)malloc(totLen);
+    if (buffName == NULL) {
+        FreeVoters();
+        FreeParties();
+        exit(-1);
+    }
+    
+    strcpy(buffName, pName);
+    strcat(buffName, " ");
+    strcat(buffName, pSurname);
+
+    for (int i = 0; buffName[i]!= '\0'; i++) {
+        buffName[i] = toupper(buffName[i]);
+    }
+    NewVoter->pName = buffName;
+    NewVoter->ID = ID;
+    NewVoter->pParty = pParty;
+    //NewVoter->pNext = pVoter;
+
+    Voter* pVoter = VoterList;
+        for (int i = 0; pVoter != NULL; i++) {
+            if (NewVoter->ID > pVoter->ID) {
+                pVoter = pVoter->pNext;
+            }
+            else if (i == 0) {
+                VoterList = NewVoter;
+            }
+        }
+     NewVoter->pNext = pVoter;
+     pVoter = NewVoter;
+ }
+
 
 
 /*
@@ -69,6 +121,14 @@ void AddVoter(char* pName, char* pSurname, int ID, char* pParty)
 */
 void FreeVoters()
 {
+    Voter* CurrVoter = NULL;
+
+    while (VoterList != NULL) {
+        CurrVoter = VoterList;
+        VoterList = VoterList->pNext;
+        free(CurrVoter->pName);
+        free(CurrVoter);
+    }
 }
 
 

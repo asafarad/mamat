@@ -11,7 +11,9 @@
 
 #ifndef _PARTY_H_
 #define _PARTY_H_
-typedef enum {false, true} bool;
+
+typedef enum { FALSE, TRUE } bool;
+typedef struct _Party Party;
 
 char* AddVote(char* pPartyName);
 void FreeParties();
