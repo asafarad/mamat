@@ -1,0 +1,17 @@
+#!/bin/bash
+
+counter=0
+for file in "$1"/*; do
+	if [[ -f "$file" ]]; then
+		a=`grep -e "void" "$file" | grep -e "(" | grep -e ")"`
+		if [[ "$a" ]]; then
+			new_lines=`echo "$a" | wc -l` 
+			(( counter = ${counter}+${new_lines} +0 ))
+		fi
+	elif [[ -d "$file" ]]; then
+		sub=(`"$0" "$file"`)
+		(( counter = ${counter} +${sub} +0 ))	
+	fi
+done
+echo "${counter}"
+
