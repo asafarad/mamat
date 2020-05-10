@@ -18,6 +18,5 @@ typedef struct _Party Party;
 char* AddVote(char* pPartyName);
 void FreeParties();
 void PrintResult();
-void PrintError(char* pPartyName);
 
 #endif /* _PARTY_H_ */

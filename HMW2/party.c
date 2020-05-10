@@ -64,7 +64,8 @@ char* AddVote(char* pPartyName)
 {
     bool IsExist = FALSE;
     Party* currParty = NULL;
-    for (Party* pParty = PartyList; pParty; pParty = pParty->pNext) {
+    Party* pParty = NULL;
+    for (pParty = PartyList; pParty; pParty = pParty->pNext) {
         if (!strcmp(pPartyName, pParty->Party)) {
             IsExist = TRUE;
             currParty = pParty;
@@ -72,13 +73,18 @@ char* AddVote(char* pPartyName)
     }
     if (!IsExist) {
         char* makaf;
-        makaf = strchr(pPartyName, '-');
-        if (makaf) {
-            char letterAfterMakaf = *(makaf + sizeof(char));
-            if ((letterAfterMakaf < 'A') || (letterAfterMakaf > 'Z')) {
-                PrintError(pPartyName);
+        char* tmpParty = pPartyName;
+        while ((makaf = strchr(tmpParty, '-')) != NULL) {
+            if (makaf) {
+                char letterAfterMakaf = *(makaf + sizeof(char));
+                if ((letterAfterMakaf < 'A') || (letterAfterMakaf > 'Z')) {
+                    PrintError(pPartyName);
+                    return NULL;
+                }
             }
+            tmpParty = makaf + sizeof(char);
         }
+        
 
         Party* newParty;
         newParty = (Party*)malloc(sizeof(Party));
@@ -87,7 +93,7 @@ char* AddVote(char* pPartyName)
             FreeParties();
             exit (-1);
         }
-        strcpy_s(newParty->Party, MAX_PARTY_NAME, pPartyName); //TODO - CHANGE THE STRCPY_S WITH STRCPY
+        strcpy(newParty->Party, pPartyName);
         newParty->NumVoters = 1;
         newParty->pNext = PartyList;
         PartyList = newParty;

@@ -56,14 +56,6 @@ static Voter* VoterList = NULL;
 */
 void AddVoter(char* pName, char* pSurname, int ID, char* pParty)
 {
-    bool IsExist = FALSE;
-    Voter* currVoter = NULL;
- /*   for (Voter* pVoter = VoterList; pVoter; pVoter = pVoter->pNext) {
-      if (!strcmp(ID, pVoter->ID)) {
-         IsExist = TRUE;
-       
-       }
-  */  
        
     Voter* NewVoter;
     NewVoter = (Voter*)malloc(sizeof(Voter));
@@ -87,25 +79,27 @@ void AddVoter(char* pName, char* pSurname, int ID, char* pParty)
     strcat(buffName, " ");
     strcat(buffName, pSurname);
 
-    for (int i = 0; buffName[i]!= '\0'; i++) {
+    int i;
+    for (i = 0; buffName[i]!= '\0'; i++) {
         buffName[i] = toupper(buffName[i]);
     }
     NewVoter->pName = buffName;
     NewVoter->ID = ID;
     NewVoter->pParty = pParty;
-    //NewVoter->pNext = pVoter;
 
     Voter* pVoter = VoterList;
-        for (int i = 0; pVoter != NULL; i++) {
-            if (NewVoter->ID > pVoter->ID) {
-                pVoter = pVoter->pNext;
-            }
-            else if (i == 0) {
-                VoterList = NewVoter;
-            }
-        }
-     NewVoter->pNext = pVoter;
-     pVoter = NewVoter;
+    Voter* pVoterPrev = NULL;
+    while (pVoter != NULL && pVoter->ID < ID) {
+        pVoterPrev = pVoter;
+        pVoter = pVoter->pNext;
+    }
+    if (pVoter == VoterList) {
+        NewVoter->pNext = VoterList;
+        VoterList = NewVoter;
+        return;
+    }
+    pVoterPrev->pNext = NewVoter;
+    NewVoter->pNext = pVoter;
  }
 
 
