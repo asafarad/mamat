@@ -1,16 +1,23 @@
 #!/bin/bash
 
-counter=0
+#****************************************************
+#Function name: count_void_funcs
+#Description: Counts the number of functions that return "void" under a directory, including all its subdirectories
+#Paramaters: A directory
+#Return value:  The number of functions that return "void"
+#****************************************************
+
+counter=0 #initializing a counter to zero
 for file in "$1"/*; do
-	if [[ -f "$file" ]]; then
+	if [[ -f "$file" ]]; then #Firstly, we shall check all the files in the requested directory
 		a=`grep -e "void" "$file" | grep -e "(" | grep -e ")"`
 		if [[ "$a" ]]; then
-			new_lines=`echo "$a" | wc -l` 
-			(( counter = ${counter}+${new_lines} +0 ))
+			new_lines=`echo "$a" | wc -l` #count the number of lines in which "void", "(" and ")" appeared
+			(( counter = ${counter}+${new_lines} +0 )) #sum that number into the counter
 		fi
-	elif [[ -d "$file" ]]; then
+	elif [[ -d "$file" ]]; then #Then, we shall move to all the subdirectories recursively
 		sub=(`"$0" "$file"`)
-		(( counter = ${counter} +${sub} +0 ))	
+		(( counter = ${counter} +${sub} +0 )) #sum all the results from the subdirectories
 	fi
 done
 echo "${counter}"

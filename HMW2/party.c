@@ -65,13 +65,13 @@ char* AddVote(char* pPartyName)
     bool IsExist = FALSE;
     Party* currParty = NULL;
     Party* pParty = NULL;
-    for (pParty = PartyList; pParty; pParty = pParty->pNext) {
+    for (pParty = PartyList; pParty; pParty = pParty->pNext) { //go through the list of exisiting parties, to check whether the party already exists
         if (!strcmp(pPartyName, pParty->Party)) {
-            IsExist = TRUE;
-            currParty = pParty;
+            IsExist = TRUE; 
+            currParty = pParty; 
         }
     }
-    if (!IsExist) {
+    if (!IsExist) { //it if doesn't exist - we need to make sure that the name is legal
         char* makaf;
         char* tmpParty = pPartyName;
         while ((makaf = strchr(tmpParty, '-')) != NULL) {
@@ -85,7 +85,7 @@ char* AddVote(char* pPartyName)
             tmpParty = makaf + sizeof(char);
         }
         
-
+        //Then we shall allocate memory for the new party
         Party* newParty;
         newParty = (Party*)malloc(sizeof(Party));
         if (newParty == NULL) {
@@ -93,13 +93,14 @@ char* AddVote(char* pPartyName)
             FreeParties();
             exit (-1);
         }
+        //create the party
         strcpy(newParty->Party, pPartyName);
         newParty->NumVoters = 1;
         newParty->pNext = PartyList;
         PartyList = newParty;
         return newParty->Party;
     }
-    else {
+    else { //if it already exists, add a voter to this party
         currParty->NumVoters++;
         return currParty->Party;
     }
