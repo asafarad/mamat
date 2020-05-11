@@ -56,48 +56,55 @@ static Voter* VoterList = NULL;
 */
 void AddVoter(char* pName, char* pSurname, int ID, char* pParty)
 {
-       
+    // create new node for the linked list of voters
     Voter* NewVoter;
     NewVoter = (Voter*)malloc(sizeof(Voter));
-    if (NewVoter == NULL) {
+    if (NewVoter == NULL) { // if allocation failed- free all data
         FreeVoters();
         FreeParties();
         exit(-1);
     }
+    // create a buffer for the voter's name
     char* buffName;
-    int pNameLen = strlen(pName);
-    int pSurnameLen = strlen(pSurname);
-    int totLen = pNameLen + pSurnameLen + 1;
+    int pNameLen = strlen(pName); // length of name
+    int pSurnameLen = strlen(pSurname); // length of surname
+    int totLen = pNameLen + pSurnameLen + 1; // total name length, with space
     buffName = (char*)malloc(totLen);
-    if (buffName == NULL) {
+    if (buffName == NULL) { // if allocation failed- free all data
         FreeVoters();
         FreeParties();
         exit(-1);
     }
-    
+    // cat name+space+surname 
     strcpy(buffName, pName);
     strcat(buffName, " ");
     strcat(buffName, pSurname);
 
+    //change each char to uppaer case according to the demands
     int i;
     for (i = 0; buffName[i]!= '\0'; i++) {
         buffName[i] = toupper(buffName[i]);
     }
+    // updating the fields of struct
     NewVoter->pName = buffName;
     NewVoter->ID = ID;
     NewVoter->pParty = pParty;
 
-    Voter* pVoter = VoterList;
-    Voter* pVoterPrev = NULL;
+    // find the place of the new voter in the linked list by the ID sorting
+    Voter* pVoter = VoterList; // tmp pointer to run over the linked list
+    Voter* pVoterPrev = NULL; // tmp pointer for the previous node in the linked list
     while (pVoter != NULL && pVoter->ID < ID) {
-        pVoterPrev = pVoter;
+        // if the list node isn't empty and ID is smaller than the new ID- increment the pointers
+        pVoterPrev = pVoter; 
         pVoter = pVoter->pNext;
     }
     if (pVoter == VoterList) {
+        // if pVoter stopped at the head of the list(list is empty or new ID is the smallest), need to update the head pointer
         NewVoter->pNext = VoterList;
         VoterList = NewVoter;
         return;
     }
+    // if pVoter stopped inside the list- insert new voter to its right location
     pVoterPrev->pNext = NewVoter;
     NewVoter->pNext = pVoter;
  }
@@ -118,10 +125,11 @@ void FreeVoters()
     Voter* CurrVoter = NULL;
 
     while (VoterList != NULL) {
-        CurrVoter = VoterList;
-        VoterList = VoterList->pNext;
-        free(CurrVoter->pName);
-        free(CurrVoter);
+        // while pointer doesn't point to the tail of list
+        CurrVoter = VoterList; // save pointer to current node
+        VoterList = VoterList->pNext; // update to the next node
+        free(CurrVoter->pName); // first, free name buffer of the current node
+        free(CurrVoter); // then, free the node itself
     }
 }
 
