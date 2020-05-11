@@ -69,7 +69,8 @@ void AddVoter(char* pName, char* pSurname, int ID, char* pParty)
     int pNameLen = strlen(pName); // length of name
     int pSurnameLen = strlen(pSurname); // length of surname
     int totLen = pNameLen + pSurnameLen + 1; // total name length, with space
-    buffName = (char*)malloc(totLen);
+     // allocate memory for string with size of totLen+1 for '\0'
+    buffName = (char*)malloc((totLen+1)*sizeof(char));
     if (buffName == NULL) { // if allocation failed- free all data
         FreeVoters();
         FreeParties();
