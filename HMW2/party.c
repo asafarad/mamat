@@ -63,7 +63,7 @@ static Party* PartyList = NULL;
 char* AddVote(char* pPartyName)
 {
     if (pPartyName == NULL) {
-        return NULL;
+        return NULL; // in case there is NULL party name
     }
     bool IsExist = FALSE;
     Party* currParty = NULL;

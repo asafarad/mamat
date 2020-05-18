@@ -57,7 +57,7 @@ static Voter* VoterList = NULL;
 void AddVoter(char* pName, char* pSurname, int ID, char* pParty)
 {
     if (pName == NULL || pSurname == NULL || pParty == NULL) {
-        return;
+        return; // in case one of the names is NULL(should not happen)
     }
     // create new node for the linked list of voters
     Voter* NewVoter;
