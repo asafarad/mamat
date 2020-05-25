@@ -4,7 +4,7 @@
 #include <string.h>
 
 typedef struct node_ {
-    struct elem* next;
+    struct node_* next;
     PElem pElem;
 } Node;
 
@@ -12,51 +12,121 @@ typedef struct List_
 {
     int size;
     Node *head;
+    Node *tail;
+    Node *iter;
 
     /*User functions*/
     CloneElem elem_cln;
-    ListCompare list_cmp;
-    ListPrint list_prt;
-    ListRmv list_rmv;
+    ElemCompare elem_cmp;
+    ElemPrint elem_prt;
+    ElemRemove elem_rmv;
 } List;
 
 /*Interface functions*/
-PList ListCreate(CloneElem elem_cln, ListRmv list_rmv, ListCompare list_cmp, ListPrint list_prt) {
+PList ListCreate(CloneElem elem_cln, ElemRemove elem_rmv, ElemCompare elem_cmp, ElemPrint elem_prt) {
     PList newList;
     newList = (PList)malloc(sizeof(List));
     if (newList == NULL)
         return NULL;
+
     
     //Constructor:
     newList->head = NULL;
     newList->size = 0;
     newList->elem_cln = elem_cln;
-    newList->list_rmv = list_rmv;
-    newList->list_cmp = list_cmp;
-    newList->list_prt = list_prt;
+    newList->elem_rmv = elem_rmv;
+    newList->elem_cmp = elem_cmp;
+    newList->elem_prt = elem_prt;
+    newList->iter = NULL;
     return newList;
 }
 
 void ListDestory(PList pList) {
-    
-
-    while (PartyList != NULL) {
-        CurrParty = PartyList;
-        PartyList = PartyList->pNext;
-        free(CurrParty);
-    }
 
     Node* currNode = NULL;
     Node* node = pList->head;
     while (node != NULL){
         currNode = node;
         node = node->next;
-        list_rmv(pList, currNode->pElem)
-        
+        pList->elem_rmv(currNode->pElem);
+        free(currNode);
     }
+    free(pList);
 
 }
-Result ListAdd(PList pList, PElem pElem);
-Result ListRemove(PList pList, PElem pElem);
-PElem ListGetFirst(PList pList);
-PElem ListGetNext(PList pList);
+Result ListAdd(PList pList, PElem pElem) {
+    Node* newNode;
+    newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL)
+        return FAIL;
+    PElem newElem = pList->elem_cln(pElem);
+    newNode->pElem = newElem;
+    newNode->next = NULL;
+    //Advance the last "next" in the list to point at the newNode
+    pList->tail = newNode;
+    return SUCCESS;
+}
+Result ListRemove(PList pList, PElem pElem) {
+
+    Node* node = pList->head;
+    Node* prevNode = NULL;
+    while (node != NULL) {
+        if (pList->elem_cmp(pElem, node->pElem)) {
+
+            if (node == pList->head) {
+                pList->head = node->next;
+                pList->elem_rmv(node->pElem);
+                free(node);
+                return SUCCESS;
+            }
+            else {
+                prevNode->next = node->next;
+                pList->elem_rmv(node->pElem);
+                free(node);
+                return SUCCESS;
+            }
+        }
+        prevNode = node;
+        node = node->next;
+    }
+    return FAIL;
+}
+PElem ListGetFirst(PList pList) {
+    pList->iter = pList->head;
+    return pList->iter->pElem;
+}
+PElem ListGetNext(PList pList) {
+    if (pList->iter->next == NULL)
+        return NULL;
+    PElem currElem = pList->iter->pElem;
+    pList->iter = pList->iter->next;
+    return currElem;
+}
+
+BOOL ListCompare(PList pList1, PList pList2) {
+    PElem currElem1 = ListGetFirst(pList1);
+    PElem currElem2 = ListGetFirst(pList2);
+    while (currElem1 != NULL && currElem2 != NULL) {
+        if (pList1->elem_cmp(currElem1, currElem2) == FALSE)
+            return FALSE;
+        currElem1 = ListGetNext(pList1);
+        currElem2 = ListGetNext(pList2);
+    }
+    if ((currElem1 == NULL && currElem2 != NULL) || (currElem2 == NULL && currElem1 != NULL))
+        return FALSE;
+
+    return TRUE;
+}
+
+void ListPrint(PList pList) {
+
+    PElem currElem = ListGetFirst(pList);
+    printf("[");
+    while (currElem != NULL) {
+        pList->elem_prt(currElem);
+        currElem = ListGetNext(pList);
+    }
+
+    printf("]\n");
+
+}
