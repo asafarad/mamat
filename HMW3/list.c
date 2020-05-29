@@ -8,6 +8,13 @@ typedef struct node_ {
     PElem pElem;
 } Node;
 
+/*
+typedef struct iter_ {
+    Node* 
+    
+} iter;
+*/
+
 typedef struct List_
 {
     int size;
@@ -21,6 +28,8 @@ typedef struct List_
     ElemPrint elem_prt;
     ElemRemove elem_rmv;
 } List;
+
+
 
 /*Interface functions*/
 PList ListCreate(CloneElem elem_cln, ElemRemove elem_rmv, ElemCompare elem_cmp, ElemPrint elem_prt) {
@@ -64,6 +73,7 @@ Result ListAdd(PList pList, PElem pElem) {
     newNode->next = NULL;
     //Advance the last "next" in the list to point at the newNode
     pList->tail = newNode;
+    pList->size++;
     return SUCCESS;
 }
 Result ListRemove(PList pList, PElem pElem) {
@@ -88,6 +98,7 @@ Result ListRemove(PList pList, PElem pElem) {
         }
         prevNode = node;
         node = node->next;
+        pList->size--;
     }
     return FAIL;
 }
@@ -98,9 +109,8 @@ PElem ListGetFirst(PList pList) {
 PElem ListGetNext(PList pList) {
     if (pList->iter->next == NULL)
         return NULL;
-    PElem currElem = pList->iter->pElem;
     pList->iter = pList->iter->next;
-    return currElem;
+    return pList->iter->pElem;
 }
 
 BOOL ListCompare(PList pList1, PList pList2) {
