@@ -75,7 +75,14 @@ Result ListAdd(PList pList, PElem pElem) {
     newNode->pElem = newElem;
     newNode->next = NULL;
     //Advance the last "next" in the list to point at the newNode
-    pList->tail = newNode;
+    if (pList->head == NULL) {
+        pList->head = newNode;
+        pList->tail = pList->head->next;
+    }
+    else {
+        pList->tail = newNode;
+        pList->tail = newNode->next;
+    }
     pList->size++;
     return SUCCESS;
 }

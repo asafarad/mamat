@@ -5,6 +5,11 @@
 
 typedef struct Cluster_* PCluster;
 
-/*Interface functions*/
 
+/*Interface functions*/
+PCluster ClusterCreate(int n);
+void ClusterDestroy(PCluster pCluster);
+Result ClusterAddPoint(PCluster pCluster, PPoint pPoint);
+int ClusterGetMinDistance(PCluster pCluster, PPoint pPoint);
+void ClusterPrint(PCluster pCluster);
 #endif
