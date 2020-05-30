@@ -34,6 +34,8 @@ typedef struct List_
 /*Interface functions*/
 PList ListCreate(CloneElem elem_cln, ElemRemove elem_rmv, ElemCompare elem_cmp, ElemPrint elem_prt) {
     PList newList;
+    if ((elem_cln == NULL) || (elem_rmv == NULL) || (elem_cmp == NULL) || (elem_prt == NULL))
+        return NULL;
     newList = (PList)malloc(sizeof(List));
     if (newList == NULL)
         return NULL;
@@ -41,16 +43,17 @@ PList ListCreate(CloneElem elem_cln, ElemRemove elem_rmv, ElemCompare elem_cmp, 
     
     //Constructor:
     newList->head = NULL;
+    newList->tail = NULL;
     newList->size = 0;
     newList->elem_cln = elem_cln;
     newList->elem_rmv = elem_rmv;
     newList->elem_cmp = elem_cmp;
     newList->elem_prt = elem_prt;
-    newList->iter = NULL;
+    newList->iter = newList->head;
     return newList;
 }
 
-void ListDestory(PList pList) {
+void ListDestroy(PList pList) {
 
     Node* currNode = NULL;
     Node* node = pList->head;
@@ -107,7 +110,7 @@ PElem ListGetFirst(PList pList) {
     return pList->iter->pElem;
 }
 PElem ListGetNext(PList pList) {
-    if (pList->iter->next == NULL)
+    if ((pList->iter == NULL) || (pList->iter->next == NULL ))
         return NULL;
     pList->iter = pList->iter->next;
     return pList->iter->pElem;
@@ -139,4 +142,7 @@ void ListPrint(PList pList) {
 
     printf("]\n");
 
+}
+int ListGetSize(PList pList) {
+    return pList->size;
 }
