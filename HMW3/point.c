@@ -30,10 +30,13 @@ CloneElem cloneCoordinate(PElem pElem) {
 CloneElem clonePoint(PElem pElem) {
 	if (pElem == NULL)
 		return NULL;
-	PPoint pPoint;
-	if ((pPoint = (PPoint)malloc(sizeof(Point))) == NULL);
+	PPoint pPoint = PointCreate(((PPoint)pElem)->dim);
+	if (pPoint == NULL)
 		return NULL;
-	pPoint = (PPoint)pElem;
+	pPoint->pList = ((PPoint)pElem)->pList;
+	/*if ((pPoint = (PPoint)malloc(sizeof(Point))) == NULL);
+		return NULL;
+	pPoint = (PPoint)pElem;*/
 	return pPoint;
 }
 ElemRemove removeCoordinate(PElem pElem) {

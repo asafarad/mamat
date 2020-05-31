@@ -37,7 +37,8 @@ void ClusterDestroy(PCluster pCluster) {
 Result ClusterAddPoint(PCluster pCluster, PPoint pPoint) {
 	if (pPoint == NULL || pCluster == NULL || (PointGetDim(pPoint) != pCluster->dim))
 		return FAIL;
-	PPoint iterPoint = ListGetFirst(pCluster->pList);
+	PPoint iterPoint;
+	iterPoint = (PPoint)ListGetFirst(pCluster->pList);
 	while (iterPoint != NULL) {
 		if (ListCompare(pPoint, iterPoint) == TRUE) {
 			return FAIL;
