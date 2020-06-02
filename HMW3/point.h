@@ -1,16 +1,26 @@
+/*
+
+  File: point.h
+
+  Abstract:
+
+    Point handling interface
+
+*/
+
 #ifndef _POINT_H_
 #define _POINT_H_
 
 #include "defs.h"
 #include "list.h"
+/*Types*/
 typedef struct Point_* PPoint;
 
 /*User functions*/
-ElemCompare compareCoordinate(PElem pElem1, PElem pElem2);
-CloneElem cloneCoordinate(PElem pElem);
-CloneElem clonePoint(PElem pElem);
-ElemRemove removeCoordinate(PElem pElem);
-ElemPrint printCoordinate(PElem pElem);
+BOOL compareCoordinate(int* pCoordinate1, int* pCoordinate2);
+PElem cloneCoordinate(int* pCoordinate);
+void removeCoordinate(int* pCoordinate);
+void printCoordinate(int* pCoordinate);
 
 /*Interface functions*/
 PPoint PointCreate(int n);
@@ -20,5 +30,7 @@ int PointGetFirstCoordinate(PPoint pPoint);
 int PointGetNextCoordinate(PPoint pPoint);
 void PointPrint(PPoint pPoint);
 
+/*Getters*/
 int PointGetDim(PPoint pPoint);
-#endif
+PList PointGetList(PPoint pPoint);
+#endif  /* _POINT_H_ */
