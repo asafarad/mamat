@@ -17,18 +17,18 @@
 typedef struct Point_* PPoint;
 
 /*User functions*/
-BOOL compareCoordinate(int* pCoordinate1, int* pCoordinate2);
-PElem cloneCoordinate(int* pCoordinate);
-void removeCoordinate(int* pCoordinate);
-void printCoordinate(int* pCoordinate);
+BOOL compareCoordinate(PElem pCoordinate1, PElem pCoordinate2);
+PElem cloneCoordinate(PElem pCoordinate);
+void removeCoordinate(PElem pCoordinate);
+void printCoordinate(PElem pCoordinate);
 
 /*Interface functions*/
 PPoint PointCreate(int n);
-void PointDestroy(PPoint pPoint);
+void PointDestroy(PElem pPoint);
 Result PointAddCoordinate(PPoint pPoint, int k);
 int PointGetFirstCoordinate(PPoint pPoint);
 int PointGetNextCoordinate(PPoint pPoint);
-void PointPrint(PPoint pPoint);
+void PointPrint(PElem pPoint);
 
 /*Getters*/
 int PointGetDim(PPoint pPoint);

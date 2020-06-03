@@ -26,11 +26,16 @@ typedef struct Point_ {
   Function Name	:	compareCoordinate
   Description	:	Cast two element pointers into integers and compare the two coordinates.
   Parameters	:	pElem1	- Pointer to coordinate 1.
-					pEelem2	- Pointer to coordinate 2.
+					pElem2	- Pointer to coordinate 2.
   Return Value	:	BOOL- TRUE if equal, FALSE if not equal.
   */
-BOOL compareCoordinate(int* pCoordinate1, int* pCoordinate2) {
+BOOL compareCoordinate(PElem pElem1, PElem pElem2) {
 	// cast pElem into pointer to integer
+    if (pElem1 == NULL || pElem2 == NULL) // input legal check- pointers to NULL
+        return FALSE;
+    //casting
+    int* pCoordinate1 = (int*)pElem1;
+    int* pCoordinate2 = (int*)pElem2;
 	if (*pCoordinate1 == *pCoordinate2) // check if numbers are equal
 		return TRUE;
 	else
@@ -43,14 +48,14 @@ BOOL compareCoordinate(int* pCoordinate1, int* pCoordinate2) {
   Parameters	:	pElem	- Pointer to coordinate.
   Return Value	:	Pointer to a new element, the new coordinate.
   */
-PElem cloneCoordinate(int* pCoordinate) {
-	if (pCoordinate == NULL) // input legal check
+PElem cloneCoordinate(PElem pElem) {
+	if (pElem == NULL) // input legal check
 		return NULL;
 	int* pCoordinateClone;
 	if ((pCoordinateClone = (int*)malloc(sizeof(int))) == NULL) // allocate memory for integer
 		return NULL;
-	*pCoordinateClone = *pCoordinate; // copy the integer from the parameter
-	return (PElem)pCoordinateClone;
+	*pCoordinateClone = *(int*)pElem; // copy the integer from the parameter by casting
+	return pCoordinateClone;
 }
 
 
@@ -61,7 +66,8 @@ PElem cloneCoordinate(int* pCoordinate) {
   Parameters	:	pElem	- Pointer to coordinate.
   Return Value	:	None.
   */
-void removeCoordinate(int* pCoordinate) {
+void removeCoordinate(PElem pElem) {
+    int* pCoordinate = (int*)pElem; //casting
 	free(pCoordinate); // free ineteger pointer
 }
 /*
@@ -70,7 +76,8 @@ void removeCoordinate(int* pCoordinate) {
   Parameters	:	pElem	- Pointer to coordinate.
   Return Value	:	None.
   */
-void printCoordinate(int* pCoordinate) {
+void printCoordinate(PElem pElem) {
+    int* pCoordinate = (int*)pElem; //casting
 	printf("%d ", *pCoordinate);
 }
 
@@ -106,7 +113,8 @@ PPoint PointCreate(int n) {
   Parameters	:	pPoint    - Pointer to Point ADT to be destroyed.
   Return Value	:	None.
   */
-void PointDestroy(PPoint pPoint) {
+void PointDestroy(PElem pElem) {
+    PPoint pPoint = (PPoint)pElem; //casting
 	ListDestroy(pPoint->pList); // destroy the coordinates list
 	free(pPoint); // free the ADT itself
 }
@@ -159,12 +167,13 @@ int PointGetNextCoordinate(PPoint pPoint) {
 /*
   Function Name	:	PointPrint
   Description	:	Print the point and its coordinates by the template.
-  Parameters	:	pPoint	- Pointer to Point ADT.
+  Parameters	:	pElem	- Pointer to Point ADT.
   Return Value	:	None.
   */
-void PointPrint(PPoint pPoint) {
-	if (pPoint == NULL) // input legal check
+void PointPrint(PElem pElem) {
+	if (pElem == NULL) // input legal check
 		return;
+    PPoint pPoint = (PPoint)pElem; //casting
 	printf("Point Dimension: %d, Size: %d, Coordinates: ", pPoint->dim, ListGetSize(pPoint->pList));
 	ListPrint(pPoint->pList);
 }

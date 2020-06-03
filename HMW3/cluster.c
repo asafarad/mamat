@@ -27,9 +27,10 @@ typedef struct Cluster_ {
   Parameters	:	pElem	- Pointer to Point ADT.
   Return Value	:	Pointer to a new element, the new Point ADT. return NULL if allocate failed.
   */
-PElem clonePoint(PPoint pPoint) {
-	if (pPoint == NULL) // input legal check
+PElem clonePoint(PElem pElem) {
+	if (pElem == NULL) // input legal check
 		return NULL;
+	PPoint pPoint = (PPoint)pElem; //casting
 	int dim = PointGetDim(pPoint); // get dimension
 	PPoint pPointClone = PointCreate(dim); // create a new point
 	if (pPointClone == NULL)
@@ -41,19 +42,25 @@ PElem clonePoint(PPoint pPoint) {
 		PointAddCoordinate(pPointClone, iterCoordinate);
 		iterCoordinate = PointGetNextCoordinate(pPoint);
 	}
-	return (PElem)pPointClone;
+	return pPointClone;
 }
 
 /*
   Function Name	:	comparePoint
   Description	:	Compare the two point ADT by using the ListCompare.
-  Parameters	:	pPoint1	- Pointer to Point 1.
-					pPoint2	- Pointer to Point 2.
+  Parameters	:	pElem1	- Pointer to Point 1.
+					pElem2	- Pointer to Point 2.
   Return Value	:	BOOL- TRUE if equal, FALSE if not equal.
   */
-BOOL comparePoint(PPoint pPoint1, PPoint pPoint2) {
+BOOL comparePoint(PElem pElem1, PElem pElem2) {
+	if (pElem1 == NULL || pElem2 == NULL)
+		return FALSE;
+	//casting
+	PPoint pPoint1 = (PPoint)pElem1;
+	PPoint pPoint2 = (PPoint)pElem2;
 	if (PointGetDim(pPoint1) != PointGetDim(pPoint2)) // if not the same dimension- not equal
 		return FALSE;
+
 	// compare using the ListCompare
 	return (ListCompare(PointGetList(pPoint1), PointGetList(pPoint2)));
 }

@@ -16,8 +16,8 @@
 typedef struct Cluster_* PCluster;
 
 /*User functions*/
-BOOL comparePoint(PPoint pPoint1, PPoint pPoint2);
-PElem clonePoint(PPoint pPoint);
+BOOL comparePoint(PElem pPoint1, PElem pPoint2);
+PElem clonePoint(PElem pPoint);
 
 /*Interface functions*/
 PCluster ClusterCreate(int n);
