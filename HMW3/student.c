@@ -31,21 +31,32 @@ typedef struct Student_ {
   */
 
 PStudent StudentCreate(char* name, int age, int ID, char* faculty) {
-	if (name == NULL || faculty == NULL) //missing input check for age and ID
+	if (name == NULL || faculty == NULL) 
 		return NULL;
+
+	//Create a new student and allocate memory for it:
 	PStudent NewStudent;
 	NewStudent = (PStudent)malloc(sizeof(Student));
 	if (NewStudent == NULL)
 		return NULL;
+
+	//Allocate memory for the "name" string:
 	NewStudent->name = (char*)malloc(1+strlen(name));
+
+	//Any allocation failure requires freeing all the memory that has been allocated so far:
 	if (NewStudent->name == NULL) {
 		free(NewStudent);
 		return NULL;
 	}
+
+	//Allocate memory for the "faculty" string:
 	strcpy(NewStudent->name, name);
+
+	//Copy all the student's details into the newly created object:
 	NewStudent->age = age;
 	NewStudent->ID = ID;
 	NewStudent->faculty = (char*)malloc(1+strlen(faculty));
+	//Any allocation failure requires freeing all the memory that has been allocated so far:
 	if (NewStudent->faculty == NULL) {
 		free(NewStudent->name);
 		free(NewStudent);
@@ -87,16 +98,24 @@ void printStudent(PElem pStudent) {
 PElem cloneStudent(PElem pStudent) {
 	if (pStudent == NULL)
 		return NULL;
+
+	//Casting the input to type PStudent:
 	PStudent OldStudent = (PStudent)pStudent;
+
+	//Create a new student and allocate memory for it:
 	PStudent NewStudent;
 	NewStudent = (PStudent)malloc(sizeof(Student));
 	if (NewStudent == NULL)
 		return NULL;
+
+	//Allocate memory for the "name" string:
 	NewStudent->name = (char*)malloc(1+strlen(OldStudent->name));
 	if (NewStudent->name == NULL) {
 		free(NewStudent);
 		return NULL;
 	}
+
+	//Copy all the input student's details into the newly created object:
 	strcpy(NewStudent->name, OldStudent->name);
 	NewStudent->age = OldStudent->age;
 	NewStudent->ID = OldStudent->ID;
@@ -143,8 +162,11 @@ BOOL compareStudents(PElem pStudent1, PElem pStudent2) {
 	if (pStudent1 == NULL || pStudent2 == NULL)
 		return FALSE;
 
+	//Casting the inputs to type PStudent:
 	PStudent Student1 = (PStudent)pStudent1;
 	PStudent Student2 = (PStudent)pStudent2;
+
+	//Two students are considered the same if they share the same ID:
 	if (Student1->ID != Student2->ID)
 		return FALSE;
 
