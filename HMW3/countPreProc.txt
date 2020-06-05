@@ -7,15 +7,22 @@
 #Return value:  The number of lines that the preprocessor add to C files
 #****************************************************
 
-counter=0 #initializing a counter to zero
+#Initializing a counter to zero
+counter=0 
 
+#We shall iterate over the files in the requested folder
 for file in "$1"/*; do
 		file_name="$file"
-		a=`echo "${file_name}" | grep -E '\.c$'`
-		if [[ "$a" ]]; then
+		a=`echo "${file_name}" | grep -E '\.c$'` 
+		if [[ "$a" ]]; then    #If a file's name contains the suffix ".c"
+
 			file_lines=`cat "${file}" | wc -l`
 			preproc_lines=`gcc -E "${file}" | wc -l`
+
+			#We shall sum the number of preprocessor-output lines and subtract the lines of the file itself
 			(( counter = ${counter} +${preproc_lines} -${file_lines} +0 ))
 		fi
 done
+
+#Then we shall return the outcome of all the sums:
 echo "${counter}"
