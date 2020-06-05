@@ -18,58 +18,82 @@ PStudent StudentCreate(char* name, int age, int ID, char* faculty) {
 	NewStudent = (PStudent)malloc(sizeof(Student));
 	if (NewStudent == NULL)
 		return NULL;
-	NewStudent->name = (char*)malloc(sizeof(strlen(name))+1);
+	NewStudent->name = (char*)malloc(1+strlen(name));
+	if (NewStudent->name == NULL) {
+		free(NewStudent);
+		return NULL;
+	}
 	strcpy(NewStudent->name, name);
 	NewStudent->age = age;
 	NewStudent->ID = ID;
-	NewStudent->faculty = (char*)malloc(sizeof(strlen(faculty))+1);
+	NewStudent->faculty = (char*)malloc(1+strlen(faculty));
+	if (NewStudent->faculty == NULL) {
+		free(NewStudent->name);
+		free(NewStudent);
+		return NULL;
+	}
 	strcpy(NewStudent->faculty, faculty);
 
 	return NewStudent;
 }
-void printStudent(PStudent Student) {
-	if (Student == NULL)
+void printStudent(PElem pStudent) {
+	//Input check:
+	if (pStudent == NULL)
 		return;
-	printf("Name: %s, Age: %d, ID: %d, Faculty: %s\n", Student->name, Student->age, Student->ID, Student->faculty);
+
+	//Casting the input to type PStudent:
+	PStudent ThisStudent = (PStudent)pStudent;
+
+	printf("Name: %s, Age: %d, ID: %d, Faculty: %s\n", ThisStudent->name, ThisStudent->age, ThisStudent->ID, ThisStudent->faculty);
 }
 
-PStudent cloneStudent(PStudent Student) {
-	if (Student == NULL)
+PElem cloneStudent(PElem pStudent) {
+	if (pStudent == NULL)
 		return NULL;
+	PStudent OldStudent = (PStudent)pStudent;
 	PStudent NewStudent;
 	NewStudent = (PStudent)malloc(sizeof(Student));
 	if (NewStudent == NULL)
 		return NULL;
-	NewStudent->name = (char*)malloc(sizeof(strlen(Student->name))+1);
-	strcpy(NewStudent->name, Student->name);
-	NewStudent->age = Student->age;
-	NewStudent->ID = Student->ID;
-	NewStudent->faculty = (char*)malloc(sizeof(strlen(Student->faculty))+1);
-	strcpy(NewStudent->faculty, Student->faculty);
+	NewStudent->name = (char*)malloc(1+strlen(OldStudent->name));
+	if (NewStudent->name == NULL) {
+		free(NewStudent);
+		return NULL;
+	}
+	strcpy(NewStudent->name, OldStudent->name);
+	NewStudent->age = OldStudent->age;
+	NewStudent->ID = OldStudent->ID;
+	NewStudent->faculty = (char*)malloc(1+strlen(OldStudent->faculty));
+	if (NewStudent->faculty == NULL) {
+		free(NewStudent->name);
+		free(NewStudent);
+		return NULL;
+	}
+	strcpy(NewStudent->faculty, OldStudent->faculty);
 	
-	return NewStudent;
+	return (PElem)NewStudent;
 }
 
-void destroyStudent(PStudent Student) {
-	if (Student == NULL) 
+void destroyStudent(PElem pStudent) {
+
+	//Iput check:
+	if (pStudent == NULL) 
 		return;
+	PStudent Student = (PStudent)pStudent;
 	free(Student->name);
 	free(Student->faculty);
 	free(Student);
 }
 
-BOOL compareStudents(PStudent Student1, PStudent Student2) {
+BOOL compareStudents(PElem pStudent1, PElem pStudent2) {
  
-	if (Student1 == NULL || Student2 == NULL)
+	//Input check:
+	if (pStudent1 == NULL || pStudent2 == NULL)
 		return FALSE;
 
-	if (!strcmp(Student1->name,Student2->name))
-		return FALSE;
-	if (Student1->age != Student2->age)
-		return FALSE;
+	PStudent Student1 = (PStudent)pStudent1;
+	PStudent Student2 = (PStudent)pStudent2;
 	if (Student1->ID != Student2->ID)
-		return FALSE;
-	if (!strcmp(Student1->faculty,Student2->faculty))
 		return FALSE;
 
 	return TRUE;
