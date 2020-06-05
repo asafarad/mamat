@@ -1,39 +1,55 @@
+/*
+
+  File: list.c
+
+  Abstract:
+
+    List handling implementation
+
+*/
+
 #include "list.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+/*Types*/
 typedef struct node_* PNode;
 typedef struct node_ {
-    PElem pElem;
-    PNode next;
+    PElem pElem; //pointer to abstract element
+    PNode next; //next node
 } Node;
 
-/*
-typedef struct iter_ {
-    Node* 
-    
-} iter;
-*/
 
 typedef struct List_
 {
-    int size;
+    int size; //size of list
     PNode head;
     PNode tail;
-    PNode iter;
+    PNode iter; //inner iterator to get the elements
 
     /*User functions*/
-    CloneElem elem_cln;
-    ElemCompare elem_cmp;
-    ElemPrint elem_prt;
-    ElemRemove elem_rmv;
+    CloneElem elem_cln; //function for clone element
+    ElemCompare elem_cmp; //function for compare element
+    ElemPrint elem_prt; //function for print element
+    ElemRemove elem_rmv; //function for remove element
 } List;
 
 
 
 /*Interface functions*/
+
+/*
+  Function Name	:	ListCreate
+  Description	:	Allocate a new empty list with pointers to the user functions.
+  Parameters	:	elem_cln	- Pointer to user function clone element.
+                    elem_rmv    - Pointer to user function remove element.
+                    elem_cmp    - Pointer to user function compare element.
+                    elem_prt    - Pointer to user function print element.
+  Return Value	:	Pointer to a new empty list ADT. return NULL if allocate failed.
+  */
 PList ListCreate(CloneElem elem_cln, ElemRemove elem_rmv, ElemCompare elem_cmp, ElemPrint elem_prt) {
+    // input legal check
     if ((elem_cln == NULL) || (elem_rmv == NULL) || (elem_cmp == NULL) || (elem_prt == NULL))
         return NULL;
     PList newList;
@@ -42,15 +58,16 @@ PList ListCreate(CloneElem elem_cln, ElemRemove elem_rmv, ElemCompare elem_cmp, 
         return NULL;
 
     
-    //Constructor:
+    //Constructor: initlize empty list
     newList->head = NULL;
     newList->tail = NULL;
     newList->size = 0;
+    newList->iter = newList->head;
+    //take the pointers to the compatible functions
     newList->elem_cln = elem_cln;
     newList->elem_rmv = elem_rmv;
     newList->elem_cmp = elem_cmp;
     newList->elem_prt = elem_prt;
-    newList->iter = newList->head;
     return newList;
 }
 

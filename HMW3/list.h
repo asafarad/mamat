@@ -1,3 +1,13 @@
+/*
+
+  File: list.h
+
+  Abstract:
+
+    List handling interface
+
+*/
+
 #ifndef _LIST_H_
 #define _LIST_H_
 #include "defs.h"
@@ -24,6 +34,7 @@ BOOL ListCompare(PList pList1, PList pList2);
 Result ListRemove(PList pList, PElem pElem);
 void ListPrint(PList pList);
 
+/*Getters*/
 int ListGetSize(PList pList);
  
 
