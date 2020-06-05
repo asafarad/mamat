@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#****************************************************
+#Function name: countPreProc
+#Description: Counts the number of lines the preprocessor adds to C files
+#Paramaters: A directory
+#Return value:  The number of lines that the preprocessor add to C files
+#****************************************************
+
+counter=0 #initializing a counter to zero
+
+for file in "$1"/*; do
+		file_name="$file"
+		a=`grep -e ".c" "${file_name}"`
+		if [[ "$a" ]]; then
+			file_lines=`cat "${file}" | wc -l`
+			preproc_lines=`gcc -E "${file}" | wc -l`
+			(( counter = ${counter} +${preproc_lines} -${file_lines} +0 ))
+		fi
+done
+echo "${counter}"
