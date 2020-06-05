@@ -11,7 +11,7 @@ counter=0 #initializing a counter to zero
 
 for file in "$1"/*; do
 		file_name="$file"
-		a=`grep -e ".c" "${file_name}"`
+		a=`echo "${file_name}" | grep -E '\.c$'`
 		if [[ "$a" ]]; then
 			file_lines=`cat "${file}" | wc -l`
 			preproc_lines=`gcc -E "${file}" | wc -l`
