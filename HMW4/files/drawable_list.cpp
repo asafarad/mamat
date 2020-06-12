@@ -84,6 +84,25 @@ bool Iterator::valid() const {
 	return ptr->valid;
 }
 
+DrawableList::DrawableList() :
+	size(0)
+{
+	head = new Node;
+	tail = new Node;
+};
+
+DrawableList::~DrawableList() {
+	Node* currNode = tail;
+	Node* tmpNode;
+	while (currNode != head) {
+		delete currNode->item;
+		tmpNode = currNode->prev;
+		delete currNode;
+		currNode = tmpNode;
+	}
+	delete head->item;
+	delete head;
+}
 
 
 void DrawableList::push_front(Drawable& item) {
