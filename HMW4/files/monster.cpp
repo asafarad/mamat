@@ -3,8 +3,6 @@
 #include "ascii_objects.h"
 #include "drawable_list.h"
 
-int Monster::count = 0;
-
 Monster::Monster(unsigned short x, unsigned short y, int direction_hold) :
 
 	level(1),
@@ -13,11 +11,10 @@ Monster::Monster(unsigned short x, unsigned short y, int direction_hold) :
 	direction_hold(direction_hold),
 	direction_counter(0),
 	gfx(MONSTER0),
-	ID(count)
+	ID(1) //1 stands for a monster, -1 stands for an apple
 {
 	bounding_box = { x, y, 1, 1 };
 	next_bb = { x - 1,y,1,1 };
-	count++;
 };
 
 void Monster::move(direction_t direction) {
@@ -49,24 +46,43 @@ void Monster::move(direction_t direction) {
 	mini_gui_move(mg, next_bb.x, next_bb.y);
 }
 
+/**
+ * @brief Is called whenever any refresh is required
+ */
 void Monster::refresh() {
-	if (level >= 5 && level < 15) {
-		gfx = MONSTER1;
+	if (level < 5) {
+		gfx = MONSTER0;
+		vel = 1;
+		next_bb.width = 1;
 		next_bb.height = 1;
-		next_bb.width = 3;
 	}
-	else if (level >= 15 && level < 25) {
+	else if (level < 15) {
+		gfx = MONSTER1;
+		vel = 1;
+		next_bb.width = 3;
+		next_bb.height = 1;
+	}
+	else if (level < 25) {
 		gfx = MONSTER2;
-		next_bb.height = 2;
+		vel = 1;
 		next_bb.width = 3;
+		next_bb.height = 2;
 	}
-	else if (level >= 15 && level < 25) {
+	else {
 		gfx = MONSTER3;
-		next_bb.height = 3;
-		next_bb.width = 8;
 		vel = 2;
+		next_bb.width = 8;
+		next_bb.height = 3;
 	}
-
+	// Get world size
+	struct rect world_size = mini_gui_get_screen_size(mg);
+	// Fix position in case of screen overflow
+	if (next_bb.x + next_bb.width >= world_size.width) {
+		next_bb.x = world_size.width - next_bb.width;
+	}
+	if (next_bb.y + next_bb.height >= world_size.height) {
+		next_bb.y = world_size.height - next_bb.height;
+	}
 }
 
 void Monster::eatApple(Iterator& appleIter, DrawableList& lst) {
@@ -75,16 +91,15 @@ void Monster::eatApple(Iterator& appleIter, DrawableList& lst) {
 	//refresh;
 	
 }
-void Monster::fight(Iterator& enemyIter, DrawableList& lst) {
+void Monster::fight(Iterator& myselfIter, Iterator& enemyIter, DrawableList& lst) {
 	Monster* enemy = dynamic_cast<Monster*> (enemyIter.get_object);
 	if (enemy->get_level < level) {
 		level += enemy->get_level;
 		lst.erase(enemyIter);
 	}
 	else {
-		enemy->set_level(level)
-			lst.erase();
-
+		enemy->set_level(level);
+		lst.erase(myselfIter);
 	}
 }
 
@@ -101,17 +116,25 @@ void Monster::step(DrawableList& lst) {
  //////COMMENT - CHECK ALL THE INPUTS LATER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	Iterator iter = lst.begin; 
 	
+	//Firstly, we shall find an iterator to this current monster
+	Iterator iterTmp = iter; //Initialize a temporary iterator
+	while (iterTmp.get_object != this)
+		iterTmp = iterTmp.next;
+
+	Iterator myselfIter = iterTmp; //myselfIter is an iterator to this current monster
+
 	for (int i=0; i<lst.get_size; i++) {
+		
 		Drawable* drawable = iter.get_object;
-		if (drawable->id == id) {
+		if (drawable=this) {
 			iter = iter.next();
 			continue;
 		}
 		if (collide(*drawable)) {
-			if (drawable->id < 0) ////////CHECK WHETHER WE STILL WANT TO CHECK BY THE NEGATIVE ID
+			if (drawable->id == -1) //check whether it's an apple (apples' ID is -1)
 				eatApple(iter, lst);
 			else
-				level < iter.get_object
+				fight(myselfIter, iter, lst);
 		}
 		iter = iter.next(); ///=opeator IMPLEMENT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		refresh;

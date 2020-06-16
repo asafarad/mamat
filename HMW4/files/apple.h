@@ -5,24 +5,11 @@
 
 class Apple : public Drawable {
 
-
-	// The velocity of the monster
-	int vel;
-
-	// The direction the moster is moving right now
-	direction_t current_direction;
-
-	// How much to keep the last direction
-	int direction_hold;
-
-	// Direction counter
-	int direction_counter;
-
-	// The next bounding box
-	struct rect next_bb;
-
-	// The gfx of the monster
+	// The gfx of the apple
 	const char* gfx;
+
+	// the ID of an apple
+	int ID;
 
 public:
 
@@ -34,7 +21,7 @@ public:
 	/**
 	 * @brief Move the object in the direction
 	 */
-	virtual void move(direction_t direction);
+	virtual void move();
 
 	/**
 	 * @brief Draw the object
