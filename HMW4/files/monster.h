@@ -26,17 +26,14 @@ class Monster : public Drawable {
 	// The gfx of the monster
 	const char* gfx;
 
-	// ID of monster
-	int ID;
-
-	// counter of monster objects
-	static int count;
-
+	/*
 	void eatApple(Iterator& appleIter, DrawableList& lst);
-	void fight(Iterator& enemyIter, DrawableList& lst);
-
+	void fight(Iterator& myselfIter, Iterator& enemyIter, DrawableList& lst);
+	*/
 
 public:
+
+
 
 	/**
 	 * @brief Initiate a level 1 monster in x,y

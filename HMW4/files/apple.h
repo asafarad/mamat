@@ -8,9 +8,6 @@ class Apple : public Drawable {
 	// The gfx of the apple
 	const char* gfx;
 
-	// the ID of an apple
-	int ID;
-
 public:
 
 	/**

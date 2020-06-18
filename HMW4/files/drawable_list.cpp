@@ -15,11 +15,11 @@ Iterator::Iterator(const Iterator& other) :
 	ptr(other.ptr)
 	// Should we initialize also DrawableList??????????????????
 {
-	increase_counter;
+	increase_counter();
 };
 
 Iterator::~Iterator() {
-	decrease_counter;
+	decrease_counter();
 }
 
 void Iterator::decrease_counter() {
@@ -53,9 +53,9 @@ Iterator& Iterator::set(const Iterator& other) {
 		return *this;
 	if (ptr == other.ptr)
 		return *this;
-	decrease_counter;
+	decrease_counter();
 	ptr = other.ptr;
-	increase_counter;
+	increase_counter();
 	return *this;
 }
 
@@ -127,7 +127,7 @@ void DrawableList::push_back(Drawable& item) {
 }
 
 void DrawableList::erase(Iterator& it) {
-	it.invalidate;
+	it.invalidate();
 }
 
 int DrawableList::get_size() const {

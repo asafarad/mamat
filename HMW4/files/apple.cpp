@@ -2,14 +2,11 @@
 #include "drawable.h"
 #include "ascii_objects.h"
 #include "drawable_list.h"
-#include "drawable.cpp"
 
-//ASAF - I added a "pass" argument which means "doing nothing" :) It's useful for object like the apple which doesn't do much
 #define pass (void)0
 
 Apple::Apple(unsigned short x, unsigned short y, int direction_hold) :
-	gfx(APPLE),
-	ID(-1), //-1 stands for an apple, 1 stands for a monster
+	gfx(APPLE)//-1 stands for an apple, 1 stands for a monster
 {
 	bounding_box = { x, y, 1, 1 };
 
@@ -36,7 +33,7 @@ void Apple::draw() {
 */
 
 int Apple::id() {
-	return ID;
+	return -1;
 }
 
 /**

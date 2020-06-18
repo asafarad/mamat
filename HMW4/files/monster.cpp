@@ -10,11 +10,10 @@ Monster::Monster(unsigned short x, unsigned short y, int direction_hold) :
 	current_direction(left),
 	direction_hold(direction_hold),
 	direction_counter(0),
-	gfx(MONSTER0),
-	ID(1) //1 stands for a monster, -1 stands for an apple
+	gfx(MONSTER0) //1 stands for a monster, -1 stands for an apple
 {
-	bounding_box = { x, y, 1, 1 };
-	next_bb = { x - 1,y,1,1 };
+	bounding_box = { x, y, (unsigned short)1, (unsigned short)1 };
+	next_bb = { unsigned short(x - 1),y,(unsigned short)1,(unsigned short)1 };
 };
 
 void Monster::move(direction_t direction) {
@@ -84,17 +83,19 @@ void Monster::refresh() {
 		next_bb.y = world_size.height - next_bb.height;
 	}
 }
-
+/*
 void Monster::eatApple(Iterator& appleIter, DrawableList& lst) {
-	level++;
+	set_level(1);
 	lst.erase(appleIter);
-	//refresh;
 	
 }
+*/
+
+/*
 void Monster::fight(Iterator& myselfIter, Iterator& enemyIter, DrawableList& lst) {
 	Monster* enemy = dynamic_cast<Monster*> (enemyIter.get_object);
-	if (enemy->get_level < level) {
-		level += enemy->get_level;
+	if (enemy->get_level() < get_level()) {
+		level += enemy->get_level();
 		lst.erase(enemyIter);
 	}
 	else {
@@ -102,9 +103,10 @@ void Monster::fight(Iterator& myselfIter, Iterator& enemyIter, DrawableList& lst
 		lst.erase(myselfIter);
 	}
 }
+*/
 
 int Monster::id() {
-	return ID;
+	return 1;
 }
 
 void Monster::draw() {
@@ -114,30 +116,44 @@ void Monster::draw() {
 
 void Monster::step(DrawableList& lst) {
  //////COMMENT - CHECK ALL THE INPUTS LATER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	Iterator iter = lst.begin; 
+	Iterator iter = lst.begin(); 
 	
 	//Firstly, we shall find an iterator to this current monster
 	Iterator iterTmp = iter; //Initialize a temporary iterator
-	while (iterTmp.get_object != this)
-		iterTmp = iterTmp.next;
+	while (iterTmp.get_object() != this)
+		iterTmp = iterTmp.next();
 
 	Iterator myselfIter = iterTmp; //myselfIter is an iterator to this current monster
 
-	for (int i=0; i<lst.get_size; i++) {
+	for (int i=0; i<lst.get_size(); i++) {
 		
-		Drawable* drawable = iter.get_object;
+		Drawable* drawable = iter.get_object();
 		if (drawable=this) {
 			iter = iter.next();
 			continue;
 		}
 		if (collide(*drawable)) {
-			if (drawable->id == -1) //check whether it's an apple (apples' ID is -1)
-				eatApple(iter, lst);
+			if (drawable->id() == -1) {//check whether it's an apple (apples' ID is -1)
+				//Then eat the apple:
+				set_level(1);
+				lst.erase(iter);
+			}
 			else
-				fight(myselfIter, iter, lst);
+			{
+				//Let's fucking fight!!!
+				Monster* enemy = dynamic_cast<Monster*> (iter.get_object());
+				if (enemy->get_level() < get_level()) {
+					level += enemy->get_level();
+					lst.erase(iter);
+				}
+				else {
+					enemy->set_level(level);
+					lst.erase(myselfIter);
+				}
+			}
 		}
 		iter = iter.next(); ///=opeator IMPLEMENT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		refresh;
+		refresh();
 	}
 	
 }
