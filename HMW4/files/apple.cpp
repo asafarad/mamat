@@ -5,10 +5,10 @@
 
 #define pass (void)0
 
-Apple::Apple(unsigned short x, unsigned short y, int direction_hold) :
+Apple::Apple(unsigned short x, unsigned short y) :
+	Drawable(rect{ x, y, 1, 1 }),
 	gfx(APPLE)//-1 stands for an apple, 1 stands for a monster
 {
-	bounding_box = { x, y, 1, 1 };
 
 };
 
@@ -16,7 +16,7 @@ Apple::Apple(unsigned short x, unsigned short y, int direction_hold) :
 /**
 	* @brief Move the object in the direction
 	*/
-void Apple::move() {
+void Apple::move(direction_t direction) {
 	pass; //Nothing happens as the apple never moves
 }
 
@@ -24,7 +24,7 @@ void Apple::move() {
 * @brief Draw the object
 */
 void Apple::draw() {
-	mini_gui_print_rect(mg, bounding_box, gfx);
+	mini_gui_print(mg, gfx);
 }
 
 /**

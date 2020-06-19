@@ -13,12 +13,12 @@ public:
 	/**
 	 * @brief Initiate a level 1 monster in x,y
 	 */
-	Apple(unsigned short x, unsigned short y, int direction_hold);
+	Apple(unsigned short x, unsigned short y);
 
 	/**
 	 * @brief Move the object in the direction
 	 */
-	virtual void move();
+	virtual void move(direction_t direction);
 
 	/**
 	 * @brief Draw the object

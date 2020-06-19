@@ -115,6 +115,9 @@ void DrawableList::push_front(Drawable& item) {
 	head->prev = newNode;
 	newNode->next = head;
 	head = newNode;
+	size++;
+	if (size == 1)
+		tail = head;
 }
 
 void DrawableList::push_back(Drawable& item) {
@@ -124,6 +127,9 @@ void DrawableList::push_back(Drawable& item) {
 	tail->next = newNode;
 	newNode->prev = tail;
 	tail = newNode;
+	size++;
+	if (size == 1)
+		head = tail;
 }
 
 void DrawableList::erase(Iterator& it) {
