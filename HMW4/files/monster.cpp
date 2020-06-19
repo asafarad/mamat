@@ -4,7 +4,7 @@
 #include "drawable_list.h"
 
 Monster::Monster(unsigned short x, unsigned short y, int direction_hold) :
-
+	Drawable(rect { x, y, (unsigned short)1, (unsigned short)1 }),
 	level(1),
 	vel(1),
 	current_direction(left),
@@ -12,7 +12,6 @@ Monster::Monster(unsigned short x, unsigned short y, int direction_hold) :
 	direction_counter(0),
 	gfx(MONSTER0) //1 stands for a monster, -1 stands for an apple
 {
-	bounding_box = { x, y, (unsigned short)1, (unsigned short)1 };
 	next_bb = { unsigned short(x - 1),y,(unsigned short)1,(unsigned short)1 };
 };
 
