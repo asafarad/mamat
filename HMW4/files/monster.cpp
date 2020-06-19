@@ -12,7 +12,8 @@ Monster::Monster(unsigned short x, unsigned short y, int direction_hold) :
 	direction_counter(0),
 	gfx(MONSTER0) //1 stands for a monster, -1 stands for an apple
 {
-	next_bb = { unsigned short(x - 1),y,(unsigned short)1,(unsigned short)1 };
+	unsigned short next_step = x - 1;
+	next_bb = rect{ next_step,y,(unsigned short)1,(unsigned short)1 };
 };
 
 void Monster::move(direction_t direction) {
@@ -110,6 +111,7 @@ int Monster::id() {
 
 void Monster::draw() {
 	mini_gui_clear_rect(mg, bounding_box);
+	refresh();
 	mini_gui_print_rect(mg, next_bb, gfx);
 }
 
@@ -127,7 +129,7 @@ void Monster::step(DrawableList& lst) {
 	for (int i=0; i<lst.get_size(); i++) {
 		
 		Drawable* drawable = iter.get_object();
-		if (drawable=this) {
+		if (drawable==this) {
 			iter = iter.next();
 			continue;
 		}
