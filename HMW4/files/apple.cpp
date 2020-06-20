@@ -6,7 +6,7 @@
 #define pass (void)0
 
 Apple::Apple(unsigned short x, unsigned short y) :
-	Drawable(rect{ x, y, 1, 1 }),
+	Drawable({ x, y, 1, 1 }),
 	gfx(APPLE)//-1 stands for an apple, 1 stands for a monster
 {
 
@@ -24,6 +24,7 @@ void Apple::move(direction_t direction) {
 * @brief Draw the object
 */
 void Apple::draw() {
+	//mini_gui_clear_rect(mg, bounding_box);
 	mini_gui_print_rect(mg, bounding_box, gfx);
 }
 

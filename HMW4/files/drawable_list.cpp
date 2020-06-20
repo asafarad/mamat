@@ -19,6 +19,8 @@ Iterator::Iterator(const Iterator& other) :
 };
 
 Iterator::~Iterator() {
+	if (ptr == nullptr)
+		return;
 	decrease_counter();
 }
 
@@ -33,6 +35,8 @@ void Iterator::decrease_counter() {
 }
 
 void Iterator::increase_counter() {
+	if (ptr == nullptr)
+		return;
 	ptr->iterator_counter++;
 }
 
@@ -60,12 +64,12 @@ Iterator& Iterator::set(const Iterator& other) {
 }
 
 Iterator& Iterator::next() {
-	if (ptr->next == nullptr)
-		return *this; //Ask this in the forum
+	/*if (ptr->next == nullptr)
+		return *this; //Ask this in the forum*/
 	decrease_counter();
-	while (ptr->next->valid == false) {
+	/*while (ptr->next->valid == false) {
 		ptr = ptr->next; //continue until we reach a valid node
-	}
+	}*/
 	ptr = ptr->next; //update to the wanted node
 	increase_counter();
 	return *this;
@@ -84,13 +88,15 @@ Iterator& Iterator::prev() {
 }
 
 bool Iterator::valid() const {
+	if (ptr == nullptr)
+		return false;
 	return ptr->valid;
 }
 
 DrawableList::DrawableList() :
 	size(0)
 {
-	head = new Node;
+	head = nullptr;
 	tail = head;
 };
 
@@ -112,24 +118,32 @@ void DrawableList::push_front(Drawable& item) {
 	Node* newNode = new Node;
 	newNode->item = &item;
 	newNode->valid = true;
-	head->prev = newNode;
 	newNode->next = head;
+	if (size == 0) { // list is empty
+		head = newNode;
+		tail = head;
+		size++;
+		return;
+	}
+	head->prev = newNode;
 	head = newNode;
 	size++;
-	if (size == 1)
-		tail = head;
 }
 
 void DrawableList::push_back(Drawable& item) {
 	Node* newNode = new Node;
 	newNode->item = &item;
 	newNode->valid = true;
-	tail->next = newNode;
 	newNode->prev = tail;
+	if (size == 0) { // list is empty
+		tail = newNode;
+		head = tail;
+		size++;
+		return;
+	}
+	tail->next = newNode;
 	tail = newNode;
 	size++;
-	if (size == 1)
-		head = tail;
 }
 
 void DrawableList::erase(Iterator& it) {

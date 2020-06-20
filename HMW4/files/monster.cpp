@@ -4,7 +4,7 @@
 #include "drawable_list.h"
 
 Monster::Monster(unsigned short x, unsigned short y, int direction_hold) :
-	Drawable(rect { x, y, (unsigned short)1, (unsigned short)1 }),
+	Drawable({ x, y, (unsigned short)1, (unsigned short)1 }),
 	level(1),
 	vel(1),
 	current_direction(left),
@@ -13,7 +13,7 @@ Monster::Monster(unsigned short x, unsigned short y, int direction_hold) :
 	gfx(MONSTER0) //1 stands for a monster, -1 stands for an apple
 {
 	unsigned short next_step = x - 1;
-	next_bb = rect{ next_step,y,(unsigned short)1,(unsigned short)1 };
+	next_bb = { next_step,y,(unsigned short)1,(unsigned short)1 };
 };
 
 void Monster::move(direction_t direction) {
@@ -42,7 +42,7 @@ void Monster::move(direction_t direction) {
 			break;
 		}
 	}
-	mini_gui_move(mg, next_bb.x, next_bb.y);
+	//mini_gui_move(mg, next_bb.x, next_bb.y);
 }
 
 /**
@@ -111,7 +111,6 @@ int Monster::id() {
 
 void Monster::draw() {
 	mini_gui_clear_rect(mg, bounding_box);
-	refresh();
 	mini_gui_print_rect(mg, next_bb, gfx);
 }
 
