@@ -24,7 +24,7 @@ void Apple::move(direction_t direction) {
 * @brief Draw the object
 */
 void Apple::draw() {
-	mini_gui_print(mg, gfx);
+	mini_gui_print_rect(mg, bounding_box, gfx);
 }
 
 /**
