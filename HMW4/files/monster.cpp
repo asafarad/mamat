@@ -126,7 +126,7 @@ void Monster::step(DrawableList& lst) {
 	Iterator myselfIter = iterTmp; //myselfIter is an iterator to this current monster
 
 	for (int i=0; i<lst.get_size(); i++) {
-		
+		mini_gui_log(mg, "# list size: %d\n", lst.get_size());
 		Drawable* drawable = iter.get_object();
 		if (drawable==this) {
 			iter = iter.next();
@@ -152,7 +152,8 @@ void Monster::step(DrawableList& lst) {
 				}
 			}
 		}
-		iter = iter.next(); ///=opeator IMPLEMENT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		iter = iter.next(); ///=opeator IMPLEMENT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		mini_gui_log(mg, "# next object is %d\n", drawable->id());
 		refresh();
 	}
 	

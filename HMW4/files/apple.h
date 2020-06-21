@@ -8,6 +8,8 @@ class Apple : public Drawable {
 	// The gfx of the apple
 	const char* gfx;
 
+	bool isdrawn;
+
 public:
 
 	/**

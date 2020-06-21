@@ -7,7 +7,8 @@
 
 Apple::Apple(unsigned short x, unsigned short y) :
 	Drawable({ x, y, 1, 1 }),
-	gfx(APPLE)//-1 stands for an apple, 1 stands for a monster
+	gfx(APPLE),//-1 stands for an apple, 1 stands for a monster
+	isdrawn(false)
 {
 
 };
@@ -24,8 +25,10 @@ void Apple::move(direction_t direction) {
 * @brief Draw the object
 */
 void Apple::draw() {
-	//mini_gui_clear_rect(mg, bounding_box);
-	mini_gui_print_rect(mg, bounding_box, gfx);
+	if (isdrawn == true) // apple already drawn
+		return;
+	else
+		mini_gui_print_rect(mg, bounding_box, gfx);
 }
 
 /**
