@@ -25,6 +25,8 @@ Iterator::~Iterator() {
 }
 
 void Iterator::decrease_counter() {
+	if (ptr == nullptr)
+		return;
 	ptr->iterator_counter--;
 	if (ptr->iterator_counter == 0 && ptr->valid==false) {
 		ptr->prev->next = ptr->next;
@@ -41,6 +43,8 @@ void Iterator::increase_counter() {
 }
 
 Drawable* Iterator::get_object() {
+	if (ptr == nullptr)
+		return nullptr;
 	return ptr->item;
 }
 
@@ -54,7 +58,6 @@ void Iterator::invalidate() {
 
 Iterator& Iterator::set(const Iterator& other) {
 	if (other.ptr == nullptr) //input check
-		return *this;
 	if (ptr == other.ptr)
 		return *this;
 	decrease_counter();

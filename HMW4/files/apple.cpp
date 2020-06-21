@@ -27,8 +27,10 @@ void Apple::move(direction_t direction) {
 void Apple::draw() {
 	if (isdrawn == true) // apple already drawn
 		return;
-	else
+	else {
+		isdrawn = true;
 		mini_gui_print_rect(mg, bounding_box, gfx);
+	}
 }
 
 /**
