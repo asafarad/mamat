@@ -111,6 +111,10 @@ int Monster::id() {
 
 void Monster::draw() {
 	mini_gui_clear_rect(mg, bounding_box);
+	bounding_box.x = next_bb.x;
+	bounding_box.y = next_bb.y;
+	bounding_box.width = next_bb.width;
+	bounding_box.height = next_bb.height;
 	mini_gui_print_rect(mg, next_bb, gfx);
 }
 
@@ -152,6 +156,7 @@ void Monster::step(DrawableList& lst) {
 				}
 			}
 		}
+
 		iter = iter.next(); ///=opeator IMPLEMENT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		refresh();
 	}
