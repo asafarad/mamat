@@ -12,37 +12,41 @@ Monster::Monster(unsigned short x, unsigned short y, int direction_hold) :
 	direction_counter(0),
 	gfx(MONSTER0) //1 stands for a monster, -1 stands for an apple
 {
-	unsigned short next_step = x - 1;
+	unsigned short next_step;// = (x == 1) ? x : x - 1;
+	rect screen_size = mini_gui_get_screen_size(mg);
+	next_step = ((x - 1) <= (screen_size.x + 1)) ? x : x - 1;
 	next_bb = { next_step,y,(unsigned short)1,(unsigned short)1 };
 };
 
 void Monster::move(direction_t direction) {
 	rect screen_size = mini_gui_get_screen_size(mg);
 	if (direction_counter == 0) {
-		switch (direction) {
+		current_direction = direction;
+		direction_counter = direction_hold;
+	}
+	switch (current_direction) {
 		case left:
-			if ((next_bb.x - vel) <= screen_size.x)
-				return;
-			next_bb.x = next_bb.x - vel;
+			if ((bounding_box.x - vel) <= (screen_size.x))
+				break;
+			next_bb.x = bounding_box.x - vel;
 			break;
 		case right:
-			if ((next_bb.x + next_bb.width + vel) >= screen_size.x + screen_size.width)
-				return;
-			next_bb.x = next_bb.x + vel;
+			if ((bounding_box.x + bounding_box.width + vel) >= (screen_size.x + screen_size.width))
+				break;
+			next_bb.x = bounding_box.x + vel;
 			break;
 		case up:
-			if ((next_bb.y - vel) <= screen_size.y)
-				return;
-			next_bb.y = next_bb.y - vel;
+			if ((bounding_box.y - vel) <= (screen_size.y))
+				break;
+			next_bb.y = bounding_box.y - vel;
 			break;
 		case down:
-			if ((next_bb.y + next_bb.height + vel) >= screen_size.y + screen_size.height)
-				return;
-			next_bb.y = next_bb.y + vel;
+			if ((bounding_box.y + bounding_box.height + vel) >= (screen_size.y + screen_size.height))
+				break;
+			next_bb.y = bounding_box.y + vel;
 			break;
 		}
-	}
-	//mini_gui_move(mg, next_bb.x, next_bb.y);
+	direction_counter--;
 }
 
 /**
@@ -83,27 +87,6 @@ void Monster::refresh() {
 		next_bb.y = world_size.height - next_bb.height;
 	}
 }
-/*
-void Monster::eatApple(Iterator& appleIter, DrawableList& lst) {
-	set_level(1);
-	lst.erase(appleIter);
-	
-}
-*/
-
-/*
-void Monster::fight(Iterator& myselfIter, Iterator& enemyIter, DrawableList& lst) {
-	Monster* enemy = dynamic_cast<Monster*> (enemyIter.get_object);
-	if (enemy->get_level() < get_level()) {
-		level += enemy->get_level();
-		lst.erase(enemyIter);
-	}
-	else {
-		enemy->set_level(level);
-		lst.erase(myselfIter);
-	}
-}
-*/
 
 int Monster::id() {
 	return 1;
@@ -111,6 +94,10 @@ int Monster::id() {
 
 void Monster::draw() {
 	mini_gui_clear_rect(mg, bounding_box);
+	bounding_box.x = next_bb.x;
+	bounding_box.y = next_bb.y;
+	bounding_box.width = next_bb.width;
+	bounding_box.height = next_bb.height;
 	mini_gui_print_rect(mg, next_bb, gfx);
 }
 
@@ -118,15 +105,13 @@ void Monster::step(DrawableList& lst) {
  //////COMMENT - CHECK ALL THE INPUTS LATER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	Iterator iter = lst.begin(); 
 	
-	//Firstly, we shall find an iterator to this current monster
-	Iterator iterTmp = iter; //Initialize a temporary iterator
-	while (iterTmp.get_object() != this)
-		iterTmp = iterTmp.next();
+	//Firstly, we shall find an iterator to this current monster:
+	Iterator myselfIter = iter;
+	while (myselfIter.get_object() != this)
+		myselfIter = myselfIter.next();
 
-	Iterator myselfIter = iterTmp; //myselfIter is an iterator to this current monster
-
-	for (int i=0; i<lst.get_size(); i++) {
-		mini_gui_log(mg, "# list size: %d\n", lst.get_size());
+	while (iter.valid() == true) {
+		//mini_gui_log(mg, "# list size: %d\n", lst.get_size());
 		Drawable* drawable = iter.get_object();
 		if (drawable==this) {
 			iter = iter.next();
@@ -135,25 +120,28 @@ void Monster::step(DrawableList& lst) {
 		if (collide(*drawable)) {
 			if (drawable->id() == -1) {//check whether it's an apple (apples' ID is -1)
 				//Then eat the apple:
-				set_level(1);
+				inc_level(1);
 				lst.erase(iter);
 			}
-			else
+			else if (drawable->id() == 1)
 			{
 				//Let's fucking fight!!!
 				Monster* enemy = dynamic_cast<Monster*> (iter.get_object());
-				if (enemy->get_level() < get_level()) {
-					level += enemy->get_level();
+				if (enemy->level < level) {
+					inc_level(enemy->level);
+					//level += enemy->level;
 					lst.erase(iter);
 				}
 				else {
-					enemy->set_level(level);
+					enemy->inc_level(level);
 					lst.erase(myselfIter);
+					mini_gui_log(mg, "!!!!!!I am dead!!!!!!!");
+					enemy->refresh();
 				}
 			}
 		}
 		iter = iter.next(); ///=opeator IMPLEMENT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		mini_gui_log(mg, "# next object is %d\n", drawable->id());
+		//mini_gui_log(mg, "# next object is %d\n", drawable->id());
 		refresh();
 	}
 	
@@ -163,6 +151,6 @@ int Monster::get_level() {
 	return level;
 }
 
-void Monster::set_level(int increment) {
+void Monster::inc_level(int increment) {
 	level += increment;
 }

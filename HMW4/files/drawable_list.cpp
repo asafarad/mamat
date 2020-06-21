@@ -57,7 +57,8 @@ void Iterator::invalidate() {
 }
 
 Iterator& Iterator::set(const Iterator& other) {
-	if (other.ptr == nullptr) //input check
+	//if (other.ptr == nullptr) //input check
+	//	return nullptr;
 	if (ptr == other.ptr)
 		return *this;
 	decrease_counter();
@@ -104,16 +105,16 @@ DrawableList::DrawableList() :
 };
 
 DrawableList::~DrawableList() {
-	Node* currNode = tail;
+	Node* currNode = head;
 	Node* tmpNode;
-	while (currNode != head) {
+	while (currNode != tail) {
 		delete currNode->item;
-		tmpNode = currNode->prev;
+		tmpNode = currNode->next;
 		delete currNode;
 		currNode = tmpNode;
 	}
-	delete head->item;
-	delete head;
+	delete tail->item;
+	delete tail;
 }
 
 

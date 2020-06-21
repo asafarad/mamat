@@ -41,7 +41,7 @@ public:
 	Monster(unsigned short x, unsigned short y, int direction_hold);
 
 	int get_level();
-	void set_level(int increment);
+	void inc_level(int increment);
 
 	/**
 	 * @brief Move the object in the direction
