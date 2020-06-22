@@ -8,7 +8,8 @@ using namespace std;
 
 Iterator::Iterator(Node& n) :
 	ptr(&n) {
-	n.iterator_counter++;
+	if (&n != nullptr)
+		n.iterator_counter++;
 };
 
 Iterator::Iterator(const Iterator& other) :
@@ -174,7 +175,8 @@ DrawableList::~DrawableList() {
 		delete currNode;
 		currNode = tmpNode;
 	}
-	delete tail->item;
+	if (tail != nullptr)
+		delete tail->item;
 	delete tail;
 }
 

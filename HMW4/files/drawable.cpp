@@ -16,6 +16,7 @@ Drawable::Drawable(struct rect bb) : bounding_box(bb) {}
 
 Drawable::~Drawable() {
 	mini_gui_clear_rect(mg, bounding_box);
+	//mini_gui_log(mg, "Destructor           480u58942u52942982945328932932");
 }
 
 /*

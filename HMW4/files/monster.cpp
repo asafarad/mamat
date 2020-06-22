@@ -95,8 +95,10 @@ int Monster::id() {
 
 void Monster::draw() {
 	mini_gui_clear_rect(mg, bounding_box);
+	//mini_gui_log(mg, "asjcbnasiuasiuauiauiaihsauiua monster %d CLEARED\n", this);
 	bounding_box = next_bb;
 	mini_gui_print_rect(mg, next_bb, gfx);
+	//mini_gui_log(mg, "asjcbnasiuasiuauiauiaihsauiua monster %d PRINTED\n", this);
 }
 
 void Monster::step(DrawableList& lst) {
@@ -109,7 +111,7 @@ void Monster::step(DrawableList& lst) {
 		myselfIter = myselfIter.next();
 
 	while (iter.valid() == true) {
-		mini_gui_log(mg, "# list size: %d\n", lst.get_size());
+		//mini_gui_log(mg, "# list size: %d\n", lst.get_size());
 		Drawable* drawable = iter.get_object();
 		if (drawable==this) {
 			iter = iter.next();
@@ -120,28 +122,32 @@ void Monster::step(DrawableList& lst) {
 				//Then eat the apple:
 				inc_level(1);
 				lst.erase(iter);
-				mini_gui_log(mg, "# I ate an apple!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+				refresh();
+				//mini_gui_log(mg, "# I ate an apple!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 			}
 			else if (drawable->id() == 1)
 			{
 				//Let's fucking fight!!!
 				Monster* enemy = dynamic_cast<Monster*> (iter.get_object());
-				if (enemy->level < level) {
+				if (enemy->level <= level) {
 					inc_level(enemy->level);
 					//level += enemy->level;
 					lst.erase(iter);
+					refresh();
+					mini_gui_log(mg, "I ate you!!!!!#$^#$#$%@$%@!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 				}
 				else {
 					enemy->inc_level(level);
 					lst.erase(myselfIter);
-					mini_gui_log(mg, "!!!!!!I am dead!!!!!!!");
+					mini_gui_log(mg, "!!!!!!!!!!!!@!#$$!#$#$#!$!@!!!!!!!I am dead!!!!!!!!!!!!!!!!!!!!!!!!");
 					enemy->refresh();
 				}
 			}
 		}
+		
 		iter = iter.next(); ///=opeator IMPLEMENT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		//mini_gui_log(mg, "# next object is %d\n", drawable->id());
-		refresh();
+		
 	}
 	
 }
