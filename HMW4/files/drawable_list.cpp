@@ -37,9 +37,8 @@ void Iterator::decrease_counter() {
 }
 
 void Iterator::increase_counter() {
-	if (ptr == nullptr)
-		return;
-	ptr->iterator_counter++;
+	if (valid())
+		ptr->iterator_counter++;
 }
 
 Drawable* Iterator::get_object() {
@@ -68,26 +67,81 @@ Iterator& Iterator::set(const Iterator& other) {
 }
 
 Iterator& Iterator::next() {
-	/*if (ptr->next == nullptr)
-		return *this; //Ask this in the forum*/
-	decrease_counter();
-	/*while (ptr->next->valid == false) {
-		ptr = ptr->next; //continue until we reach a valid node
-	}*/
-	ptr = ptr->next; //update to the wanted node
-	increase_counter();
+
+	//Firstly, we shall check that we have received correct input
+	if (ptr != nullptr) {
+
+		decrease_counter(); //Decreasing the current iterator's counter for all cases
+
+		//If the next node is null - we are at the tail and we shall return invalid iterator
+		if (ptr->next == nullptr) {
+			ptr = ptr->next;
+			return *this;
+		}
+
+		//If the next node is indeed valid - we just move to it
+		if (ptr->next->valid) {
+			ptr = ptr->next;
+			increase_counter();
+			return *this;
+		}
+
+		//In case the next node is NOT valid, we shall progress until a valid node
+		while (!(ptr->next->valid)) {
+			ptr = ptr->next;
+
+			//If we reached the end of the list, we shall return invalid iterator
+			if (ptr->next == nullptr) {
+				ptr = ptr->next;
+				return *this;
+			}
+		}
+		//Progress and increase the counter
+		ptr = ptr->next;
+		increase_counter();
+		return *this;
+	}
+
 	return *this;
 }
 
 Iterator& Iterator::prev() {
-	if (ptr->prev == nullptr)
-		return *this;
-	decrease_counter();
-	while (ptr->prev->valid == false) {
+
+
+	//Firstly, we shall check that we have received correct input
+	if (ptr != nullptr) {
+
+		decrease_counter(); //Decreasing the current iterator's counter for all cases
+
+		//If the previous node is null - we are at the head and we shall return invalid iterator
+		if (ptr->prev == nullptr) {
+			ptr = ptr->prev;
+			return *this;
+		}
+
+		//If the previous node is indeed valid - we just move to it
+		if (ptr->prev->valid) {
+			ptr = ptr->prev;
+			increase_counter();
+			return *this;
+		}
+
+		//In case the previous node is NOT valid, we shall regress until a valid node
+		while (!(ptr->prev->valid)) {
+			ptr = ptr->prev;
+
+			//If we reached the head of the list, we shall return invalid iterator
+			if (ptr->prev == nullptr) {
+				ptr = ptr->prev;
+				return *this;
+			}
+		}
+		//Regress and increase the counter
 		ptr = ptr->prev;
+		increase_counter();
+		return *this;
 	}
-	ptr = ptr->prev;
-	increase_counter();
+
 	return *this;
 }
 
