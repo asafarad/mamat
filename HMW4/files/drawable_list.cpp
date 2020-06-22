@@ -29,8 +29,10 @@ void Iterator::decrease_counter() {
 		return;
 	ptr->iterator_counter--;
 	if (ptr->iterator_counter == 0 && ptr->valid==false) {
-		ptr->prev->next = ptr->next;
-		ptr->next->prev = ptr->prev;
+		if (ptr->prev != nullptr)
+			ptr->prev->next = ptr->next;
+		if (ptr->next != nullptr)
+			ptr->next->prev = ptr->prev;
 		delete ptr->item;
 		delete ptr;
 	}	
@@ -51,13 +53,11 @@ void Iterator::invalidate() {
 	if (ptr == nullptr)
 		return;
 	ptr->valid = false;
-	ptr->prev->next = ptr->next;
-	ptr->next->prev = ptr->prev;
+	//ptr->prev->next = ptr->next;
+	//ptr->next->prev = ptr->prev;
 }
 
 Iterator& Iterator::set(const Iterator& other) {
-	//if (other.ptr == nullptr) //input check
-	//	return nullptr;
 	if (ptr == other.ptr)
 		return *this;
 	decrease_counter();
@@ -68,36 +68,40 @@ Iterator& Iterator::set(const Iterator& other) {
 
 Iterator& Iterator::next() {
 
+	//Decreasing the current iterator's counter for all cases
 	//Firstly, we shall check that we have received correct input
 	if (ptr != nullptr) {
 
-		decrease_counter(); //Decreasing the current iterator's counter for all cases
+		
 
 		//If the next node is null - we are at the tail and we shall return invalid iterator
 		if (ptr->next == nullptr) {
-			ptr = ptr->next;
+			struct Node* tmp = ptr->next;
+			decrease_counter();
+			ptr = tmp;
 			return *this;
 		}
 
-		//If the next node is indeed valid - we just move to it
+		/*//If the next node is indeed valid - we just move to it
 		if (ptr->next->valid) {
 			ptr = ptr->next;
 			increase_counter();
 			return *this;
-		}
+		}*/
 
-		//In case the next node is NOT valid, we shall progress until a valid node
-		while (!(ptr->next->valid)) {
-			ptr = ptr->next;
-
-			//If we reached the end of the list, we shall return invalid iterator
-			if (ptr->next == nullptr) {
-				ptr = ptr->next;
-				return *this;
+			struct Node* tmp = ptr->next;
+			decrease_counter();
+			//In case the next node is NOT valid, we shall progress until a valid node
+			while ((tmp != nullptr) && (tmp->valid == false)) {
+				tmp = tmp->next;
+				//If we reached the end of the list, we shall return invalid iterator
+				if (tmp == nullptr) {
+					ptr = tmp;
+					return *this;
+				}
 			}
-		}
 		//Progress and increase the counter
-		ptr = ptr->next;
+		ptr = tmp;
 		increase_counter();
 		return *this;
 	}
@@ -111,33 +115,36 @@ Iterator& Iterator::prev() {
 	//Firstly, we shall check that we have received correct input
 	if (ptr != nullptr) {
 
-		decrease_counter(); //Decreasing the current iterator's counter for all cases
 
-		//If the previous node is null - we are at the head and we shall return invalid iterator
+
+		//If the next node is null - we are at the tail and we shall return invalid iterator
 		if (ptr->prev == nullptr) {
-			ptr = ptr->prev;
+			struct Node* tmp = ptr->prev;
+			decrease_counter();
+			ptr = tmp;
 			return *this;
 		}
 
-		//If the previous node is indeed valid - we just move to it
-		if (ptr->prev->valid) {
-			ptr = ptr->prev;
+		/*//If the next node is indeed valid - we just move to it
+		if (ptr->next->valid) {
+			ptr = ptr->next;
 			increase_counter();
 			return *this;
-		}
+		}*/
 
-		//In case the previous node is NOT valid, we shall regress until a valid node
-		while (!(ptr->prev->valid)) {
-			ptr = ptr->prev;
-
-			//If we reached the head of the list, we shall return invalid iterator
-			if (ptr->prev == nullptr) {
-				ptr = ptr->prev;
+		struct Node* tmp = ptr->prev;
+		decrease_counter();
+		//In case the next node is NOT valid, we shall progress until a valid node
+		while ((tmp != nullptr) && (tmp->valid == false)) {
+			tmp = tmp->prev;
+			//If we reached the end of the list, we shall return invalid iterator
+			if (tmp == nullptr) {
+				ptr = tmp;
 				return *this;
 			}
 		}
-		//Regress and increase the counter
-		ptr = ptr->prev;
+		//Progress and increase the counter
+		ptr = tmp;
 		increase_counter();
 		return *this;
 	}
@@ -206,6 +213,22 @@ void DrawableList::push_back(Drawable& item) {
 
 void DrawableList::erase(Iterator& it) {
 	it.invalidate();
+	if (it.ptr == head) {
+		//it.ptr->valid = false;
+		head = it.ptr->next;
+		head->prev = nullptr;
+	}
+	else if (it.ptr == tail) {
+		//it.ptr->valid = false;
+		tail = it.ptr->prev;
+		tail->next = nullptr;
+	}
+	else {
+		//it.invalidate();
+		it.ptr->prev->next = it.ptr->next;
+		it.ptr->next->prev = it.ptr->prev;
+	}
+	size--;
 }
 
 int DrawableList::get_size() const {

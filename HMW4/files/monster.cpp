@@ -10,17 +10,18 @@ Monster::Monster(unsigned short x, unsigned short y, int direction_hold) :
 	current_direction(left),
 	direction_hold(direction_hold),
 	direction_counter(0),
+	next_bb({ x, y, 1, 1 }),
 	gfx(MONSTER0) //1 stands for a monster, -1 stands for an apple
 {
-	unsigned short next_step;// = (x == 1) ? x : x - 1;
+	/*unsigned short next_step;// = (x == 1) ? x : x - 1;
 	rect screen_size = mini_gui_get_screen_size(mg);
 	next_step = ((x - 1) <= (screen_size.x + 1)) ? x : x - 1;
-	next_bb = { next_step,y,(unsigned short)1,(unsigned short)1 };
+	next_bb = { next_step,y,(unsigned short)1,(unsigned short)1 };*/
 };
 
 void Monster::move(direction_t direction) {
-	rect screen_size = mini_gui_get_screen_size(mg);
-	if (direction_counter == 0) {
+	struct rect screen_size = mini_gui_get_screen_size(mg);
+	if (direction_counter <= 0) {
 		current_direction = direction;
 		direction_counter = direction_hold;
 	}
@@ -94,10 +95,7 @@ int Monster::id() {
 
 void Monster::draw() {
 	mini_gui_clear_rect(mg, bounding_box);
-	bounding_box.x = next_bb.x;
-	bounding_box.y = next_bb.y;
-	bounding_box.width = next_bb.width;
-	bounding_box.height = next_bb.height;
+	bounding_box = next_bb;
 	mini_gui_print_rect(mg, next_bb, gfx);
 }
 
@@ -111,7 +109,7 @@ void Monster::step(DrawableList& lst) {
 		myselfIter = myselfIter.next();
 
 	while (iter.valid() == true) {
-		//mini_gui_log(mg, "# list size: %d\n", lst.get_size());
+		mini_gui_log(mg, "# list size: %d\n", lst.get_size());
 		Drawable* drawable = iter.get_object();
 		if (drawable==this) {
 			iter = iter.next();
@@ -122,6 +120,7 @@ void Monster::step(DrawableList& lst) {
 				//Then eat the apple:
 				inc_level(1);
 				lst.erase(iter);
+				mini_gui_log(mg, "# I ate an apple!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 			}
 			else if (drawable->id() == 1)
 			{
