@@ -3,20 +3,25 @@
 #include "ascii_objects.h"
 #include "drawable_list.h"
 
+//Defining a "pass" operation" which means doing nothing
 #define pass (void)0
 
+/**
+* @brief Apple's constuctor
+*/
 Apple::Apple(unsigned short x, unsigned short y) :
-	Drawable({ x, y, 1, 1 }),
-	gfx(APPLE),//-1 stands for an apple, 1 stands for a monster
-	isdrawn(false)
+	Drawable({ x, y, 1, 1 }), //insert the location and 
+	//dimensions of the apple's bounding_box
+	gfx(APPLE),
+	isdrawn(false) 
 {
 
 };
 
 
 /**
-	* @brief Move the object in the direction
-	*/
+* @brief Move the object in the direction
+*/
 void Apple::move(direction_t direction) {
 	pass; //Nothing happens as the apple never moves
 }
@@ -35,7 +40,7 @@ void Apple::draw() {
 
 /**
 * @brief Return an ID that is unique to
-* the dynamid type of the drawable object.
+* apples - minus 1.
 */
 
 int Apple::id() {

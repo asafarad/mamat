@@ -1,14 +1,15 @@
 #ifndef APPLE_H
 #define APPLE_H
-
 #include "drawable.h"
 
 class Apple : public Drawable {
 
 	// The gfx of the apple
 	const char* gfx;
-
-	bool isdrawn;
+	bool isdrawn; //We shall use this boolean
+	//member variable to make sure that the apple
+	//hasn't been already drawn, so we don't
+	//reprint over and over again the same apples
 
 public:
 

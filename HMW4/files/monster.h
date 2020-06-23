@@ -40,11 +40,14 @@ public:
 	 */
 	Monster(unsigned short x, unsigned short y, int direction_hold);
 
+	/**
+	* @brief Initiate a level 1 monster in x,y
+	*/
 	int get_level();
 	void inc_level(int increment);
 
 	/**
-	 * @brief Move the object in the direction
+	 * @brief Move the Monster in the direction
 	 */
 	virtual void move(direction_t direction);
 

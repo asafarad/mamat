@@ -87,7 +87,7 @@ public:
 	Iterator& set(const Iterator& other);
 
 	/**
-	 * @brief Changes the state of this to point at the next valid node
+	 * @`rief Changes the state of this to point at the next valid node
 	 * @returns this
 	 * @note In case there is no next valid node, sets this as invalid
 	 */
@@ -131,19 +131,16 @@ public:
 
 	/*
 	 * @brief Push to list front (before head).
-	 * @note Do not clone the object!
 	 */
 	void push_front(Drawable& item);
 
 	/*
 	 * @brief Push to list back (after tail).
-	 * @note Do not clone the object!
 	 */
 	void push_back(Drawable& item);
 
 	/**
 	 * @brief Removes an object pointed by the iterator
-	 * @note Must invalidate the iterator.
 	 */
 	void erase(Iterator& it);
 
