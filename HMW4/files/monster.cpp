@@ -7,7 +7,7 @@
 	* @brief Monster's constuctor
 */
 Monster::Monster(unsigned short x, unsigned short y, int direction_hold) :
-	Drawable({ x, y, (unsigned short)1, (unsigned short)1 }),
+	Drawable({ x, y, (unsigned short)1, (unsigned short)1 }), //parent constructor with bounding box
 	level(1),
 	vel(1),
 	current_direction(left),
@@ -25,6 +25,7 @@ void Monster::move(direction_t direction) {
 	struct rect screen_size = mini_gui_get_screen_size(mg);
 
 	//Reset the direction_counter to direction_hold
+	//and sample random direction from parameter
 	if (direction_counter <= 0) {
 		current_direction = direction;
 		direction_counter = direction_hold;
@@ -33,29 +34,29 @@ void Monster::move(direction_t direction) {
 	//Choose the progress direction
 	switch (current_direction) {
 		case left:
-			if ((bounding_box.x - vel) <= (screen_size.x))
+			if ((bounding_box.x - vel) <= (screen_size.x)) //check out of screen
 				break;
 			next_bb.x = bounding_box.x - vel;
 			break;
 		case right:
-			if ((bounding_box.x + bounding_box.width + vel) 
+			if ((bounding_box.x + bounding_box.width + vel) //check out of screen
 				>= (screen_size.x + screen_size.width))
 				break;
 			next_bb.x = bounding_box.x + vel;
 			break;
 		case up:
-			if ((bounding_box.y - vel) <= (screen_size.y))
+			if ((bounding_box.y - vel) <= (screen_size.y)) //check out of screen
 				break;
 			next_bb.y = bounding_box.y - vel;
 			break;
 		case down:
-			if ((bounding_box.y + bounding_box.height + vel) 
+			if ((bounding_box.y + bounding_box.height + vel) //check out of screen
 				>= (screen_size.y + screen_size.height))
 				break;
 			next_bb.y = bounding_box.y + vel;
 			break;
 		}
-	direction_counter--;
+	direction_counter--; //move updated and decrease the direction counter
 }
 
 /**
@@ -107,16 +108,16 @@ void Monster::refresh() {
  * monsters: 1
  */
 int Monster::id() {
-	return 1;
+	return MONSTER_ID;
 }
 
 /**
  * @brief Draw the object
  */
 void Monster::draw() {
-	mini_gui_clear_rect(mg, bounding_box);
-	bounding_box = next_bb;
-	mini_gui_print_rect(mg, next_bb, gfx);
+	mini_gui_clear_rect(mg, bounding_box); //clear current bounding box
+	bounding_box = next_bb; //update bounding box
+	mini_gui_print_rect(mg, next_bb, gfx); //print the next move- next bounding box
 }
 
 /**
@@ -127,7 +128,7 @@ void Monster::step(DrawableList& lst) {
  //////COMMENT - CHECK ALL THE INPUTS LATER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	Iterator iter = lst.begin(); 
 	
-	//Firstly, we shall find an iterator to this current monster:
+	//Firstly, we shall keep an iterator to this current monster:
 	Iterator myselfIter = iter;
 	while (myselfIter.get_object() != this)
 		myselfIter = myselfIter.next();
@@ -136,6 +137,7 @@ void Monster::step(DrawableList& lst) {
 	while (iter.valid() == true) {
 		Drawable* drawable = iter.get_object();
 		if (drawable==this) {
+			//progress the iterator cause it points this
 			iter = iter.next();
 			continue;
 		}
@@ -144,53 +146,41 @@ void Monster::step(DrawableList& lst) {
 
 		if (collide(*drawable)) {
 			//We collided with another object! Let's
-			//check whether it's an apple (apples' 
-			//ID is -1)
+			//check whether it's an apple
 
-			if (drawable->id() == -1) {
+			if (drawable->id() == APPLE_ID) {
 				//Then eat the apple:
-				inc_level(1);
-				lst.erase(iter);
+				inc_level(1); //increment level by 1
+				lst.erase(iter); //erase apple from list
 				refresh();
 			}
-			else if (drawable->id() == 1)
+			else if (drawable->id() == MONSTER_ID)
 			{
 				//In case we bumped into another
-				//Monster (Monsters' ID is 1) -
-				//let's fight that bastard!
-				Monster* enemy = dynamic_cast<Monster*> 
-					(iter.get_object());
+				//Monster -let's fight that bastard!
+				Monster* enemy = dynamic_cast<Monster*> (drawable);
 
-				//If we win:
-				if (enemy->level <= level) {
-					inc_level(enemy->level);
-					lst.erase(iter);
+				//If this win:
+				if (enemy->level < level) {
+					inc_level(enemy->level); //increment level by level of enemy
+					lst.erase(iter); //erase beaten monster
 					refresh();
 				}
 
-				//If we lse:
+				//If this lose:
 				else {
-					enemy->inc_level(level);
-					lst.erase(myselfIter);
+					enemy->inc_level(level); //increment enemy level by myself level
+					lst.erase(myselfIter); //erase myself
 					enemy->refresh();
 				}
 			}
 		}
-		
 		iter = iter.next(); ///=opeator IMPLEMENT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		
 	}
 	
 }
 
-/**
- * @brief A getter function for the monster's 
-	current level
- */
-
-int Monster::get_level() {
-	return level;
-}
 
 /**
  * @brief A setter function that increases

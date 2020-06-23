@@ -1,6 +1,7 @@
 #ifndef APPLE_H
 #define APPLE_H
 #include "drawable.h"
+#include "monster.h"
 
 class Apple : public Drawable {
 
@@ -14,7 +15,7 @@ class Apple : public Drawable {
 public:
 
 	/**
-	 * @brief Initiate a level 1 monster in x,y
+	 * @brief Initiate an apple in x,y
 	 */
 	Apple(unsigned short x, unsigned short y);
 

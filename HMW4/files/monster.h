@@ -1,6 +1,8 @@
 #ifndef MONSTER_H
 #define MONSTER_H
 
+#define MONSTER_ID 1
+#define APPLE_ID -1
 #include "drawable.h"
 
 class Monster : public Drawable {
@@ -26,11 +28,6 @@ class Monster : public Drawable {
 	// The gfx of the monster
 	const char* gfx;
 
-	/*
-	void eatApple(Iterator& appleIter, DrawableList& lst);
-	void fight(Iterator& myselfIter, Iterator& enemyIter, DrawableList& lst);
-	*/
-
 public:
 
 
@@ -40,10 +37,9 @@ public:
 	 */
 	Monster(unsigned short x, unsigned short y, int direction_hold);
 
-	/**
-	* @brief Initiate a level 1 monster in x,y
+	/*
+	* @breif Increment the level of monster by increment
 	*/
-	int get_level();
 	void inc_level(int increment);
 
 	/**

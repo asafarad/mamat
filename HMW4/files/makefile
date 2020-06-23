@@ -1,3 +1,5 @@
+#Definitions
+
 CXX=g++
 CXXFLAGS=-std=c++11 -g -Wall
 CXXLINK=g++
@@ -6,10 +8,13 @@ OBJS=apple.o drawable.o drawable_list.o main.o mini_gui.o monster.o
 TARGET = game.exe
 RM=rm -f
 
+#Link and create an executable game
 $(TARGET): $(OBJS)
 	  $(CXXLINK) -o $(TARGET) $(OBJS) $(LIBS)
+	  
+#Dependencies
 apple.o: apple.cpp apple.h drawable.h mini_gui.h ascii_objects.h \
- drawable_list.h drawable.cpp
+ monster.h drawable_list.h
 drawable.o: drawable.cpp drawable.h mini_gui.h ascii_objects.h
 drawable_list.o: drawable_list.cpp drawable_list.h drawable.h mini_gui.h \
  ascii_objects.h
@@ -18,5 +23,7 @@ main.o: main.cpp drawable_list.h drawable.h mini_gui.h ascii_objects.h \
 mini_gui.o: mini_gui.cpp mini_gui.h
 monster.o: monster.cpp monster.h drawable.h mini_gui.h ascii_objects.h \
  drawable_list.h
+ 
+ #Clean
 clean:
-	$(RM) ADT *.o *.bak *~ #* core'
+	$(RM) ADT *.o *.bak *~ #* core

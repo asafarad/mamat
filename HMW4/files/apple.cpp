@@ -11,11 +11,10 @@
 */
 Apple::Apple(unsigned short x, unsigned short y) :
 	Drawable({ x, y, 1, 1 }), //insert the location and 
-	//dimensions of the apple's bounding_box
+	//dimensions of the apple's bounding_box in parent constructor
 	gfx(APPLE),
-	isdrawn(false) 
+	isdrawn(false) //initial apple to not drawn
 {
-
 };
 
 
@@ -44,14 +43,14 @@ void Apple::draw() {
 */
 
 int Apple::id() {
-	return -1;
+	return APPLE_ID;
 }
 
 /**
 * @brief Is called whenever any refresh is required
 */
 void Apple::refresh() {
-	pass;
+	pass; //nothing to refresh
 }
 
 
@@ -60,6 +59,6 @@ void Apple::refresh() {
 * @param lst A list of all drawable objects in the world
 */
 void Apple::step(DrawableList& lst) {
-	pass;
+	pass; //nothing to do in step
 }
 
