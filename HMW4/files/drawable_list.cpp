@@ -28,8 +28,6 @@ Iterator::Iterator(const Iterator& other) :
  * @brief Iterator's destructor
  */
 Iterator::~Iterator() {
-	if (ptr == nullptr)
-		return;
 	decrease_counter();
 }
 
@@ -55,8 +53,11 @@ void Iterator::decrease_counter() {
 			ptr->prev->next = ptr->next;
 		if (ptr->next != nullptr)
 			ptr->next->prev = ptr->prev;
+
 		delete ptr->item;
+		ptr->item = nullptr;
 		delete ptr;
+		ptr = nullptr;
 	}	
 }
 

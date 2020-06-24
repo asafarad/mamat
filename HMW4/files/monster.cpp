@@ -172,6 +172,7 @@ void Monster::step(DrawableList& lst) {
 					enemy->inc_level(level); //increment enemy level by myself level
 					lst.erase(myselfIter); //erase myself
 					enemy->refresh();
+					return;
 				}
 			}
 		}
