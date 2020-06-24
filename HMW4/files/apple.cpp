@@ -39,7 +39,7 @@ void Apple::draw() {
 
 /**
 * @brief Return an ID that is unique to
-* apples - minus 1.
+* apples - (-1).
 */
 
 int Apple::id() {

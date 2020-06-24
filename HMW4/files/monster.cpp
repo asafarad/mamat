@@ -125,7 +125,6 @@ void Monster::draw() {
  * @param lst A list of all drawable objects in the world
  */
 void Monster::step(DrawableList& lst) {
- //////COMMENT - CHECK ALL THE INPUTS LATER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	Iterator iter = lst.begin(); 
 	
 	//Firstly, we shall keep an iterator to this current monster:
@@ -175,7 +174,8 @@ void Monster::step(DrawableList& lst) {
 				}
 			}
 		}
-		iter = iter.next(); ///=opeator IMPLEMENT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		iter = iter.next(); //The default assignment constructor is enough for us
+		//so there is no need to implement an assignment constructor
 		
 	}
 	

@@ -20,7 +20,6 @@ Iterator::Iterator(Node& n) :
  */
 Iterator::Iterator(const Iterator& other) :
 	ptr(other.ptr)
-	// Should we initialize also DrawableList??????????????????
 {
 	increase_counter();
 };
@@ -235,22 +234,6 @@ DrawableList::~DrawableList() {
 		erase(it);
 		it = it.next();
 	}
-
-	/*//Start an iterator at the list's beginning
-	Node* currNode = head;
-	Node* tmpNode;
-
-	//Then iterator until the list's end
-	while (currNode != tail) {
-		delete currNode->item;
-		tmpNode = currNode->next;
-		delete currNode;
-		currNode = tmpNode;
-	}
-
-	if (tail != nullptr)
-		delete tail->item;
-	delete tail;*/
 }
 
 /*
@@ -338,7 +321,8 @@ int DrawableList::get_size() const {
  */
 Iterator DrawableList::begin() {
 	Iterator it(*head);
-	if (it.valid() == false) //in case the head is invalid- find the "real" valid head of list
+	if (it.valid() == false) //in case the head is invalid- 
+		//find the "real" valid head of list
 		it.next();
 	return it;
 }
@@ -348,7 +332,8 @@ Iterator DrawableList::begin() {
  */
 Iterator DrawableList::end() {
 	Iterator it(*tail);
-	if (it.valid() == false) //in case the tail is invalid- find the "real" valid tail of list
+	if (it.valid() == false) //in case the tail is invalid- find 
+		//the "real" valid tail of list
 		it.prev();
 	return it;
 }
