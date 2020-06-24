@@ -133,6 +133,7 @@ void Monster::step(DrawableList& lst) {
 		myselfIter = myselfIter.next();
 
 	//Now we shall run over all the valid objects:
+
 	while (iter.valid() == true) {
 		Drawable* drawable = iter.get_object();
 		if (drawable==this) {

@@ -78,7 +78,7 @@ void Iterator::increase_counter() {
 Drawable* Iterator::get_object() {
 
 	//make sure that the pointer is not null
-	if (ptr == nullptr)
+	if ((ptr == nullptr) || (ptr->item == nullptr))
 		return nullptr;
 
 	return ptr->item;
@@ -91,7 +91,8 @@ Drawable* Iterator::get_object() {
  */
 void Iterator::invalidate() {
 
-	//make sure that the pointer is not null- if it's nullptr the iterator is already invalid
+	//make sure that the pointer is not null- if it's nullptr 
+	//the iterator is already invalid
 	if (ptr == nullptr)
 		return;
 	ptr->valid = false;
@@ -124,14 +125,16 @@ Iterator& Iterator::next() {
 		//If the next node is null - we are at the tail of list and 
 		//we shall return invalid iterator(points to nullptr)
 		if (ptr->next == nullptr) {
-			//keep the next pointer in case the decrease_counter deletes the pointer memory
+			//keep the next pointer in case the decrease_counter 
+			//deletes the pointer memory
 			struct Node* nextPtr = ptr->next; 
 			decrease_counter();
 			ptr = nextPtr;
 			return *this;
 		}
 
-		//keep the next pointer in case the decrease_counter deletes the pointer memory
+		//keep the next pointer in case the decrease_counter deletes 
+		//the pointer memory
 		struct Node* nextPtr = ptr->next; 
 		decrease_counter();
 
@@ -172,13 +175,15 @@ Iterator& Iterator::prev() {
 		//If the prev node is null - we are at the head and 
 		//we shall return invalid iterator
 		if (ptr->prev == nullptr) {
-			//keep the prev pointer in case the decrease_counter deletes the pointer memory
+			//keep the prev pointer in case the decrease_counter deletes 
+			//the pointer memory
 			struct Node* prevPtr = ptr->prev;
 			decrease_counter();
 			ptr = prevPtr;
 			return *this;
 		}
-		//keep the prev pointer in case the decrease_counter deletes the pointer memory
+		//keep the prev pointer in case the decrease_counter deletes 
+		//the pointer memory
 		struct Node* prevPtr = ptr->prev;
 		decrease_counter();
 		//In case the next node is NOT valid, we shall 
@@ -206,7 +211,7 @@ Iterator& Iterator::prev() {
  * @breif Returns true iff this is valid
  */
 bool Iterator::valid() const {
-	if (ptr == nullptr) //if pointer is nullptr the iterator is invalid
+	if ((ptr == nullptr) || (ptr->item == nullptr)) //if pointer is nullptr the iterator is invalid
 		return false;
 	return ptr->valid;
 }
