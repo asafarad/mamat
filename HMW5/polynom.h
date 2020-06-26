@@ -9,6 +9,7 @@ using namespace std;
 class polynom : public func {
  public:
  
+  polynom(int n, int arr[]);
   void printcoefs(ostream&)  const ;
 
   protected:

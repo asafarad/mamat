@@ -34,9 +34,7 @@ class func {
 
       // CHECK if need to implement or pure virtual!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       virtual func& operator<<(const int& x) =0;
-      friend virtual ostream& operator<<(ostream&, const func&) = 0;
+      ostream& operator<<(ostream&, const func&);
 };
-
-
 
 #endif
