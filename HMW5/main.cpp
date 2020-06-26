@@ -15,7 +15,7 @@ const int MAXLINE = 256;
 
 int main() {
   
-   map<string,func*> func_list;
+  map<string,func*> func_list;
   char func_cmd[MAXLINE], func_name[MAXLINE], func_value[MAXLINE];
   char* token;
   

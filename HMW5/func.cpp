@@ -1,16 +1,28 @@
 #include "func.h"
 
+func::func() :
+    maxVal_(-999999),
+    minVal_(999999) {
+    //fmap_ = new map<int, int>(0, 0); ///////////CHECK WHETHER THIS WORKS WITHOUT EXPLICIT IMPLEMENTATION
+    }
+
+
+////////////////////MAKE SURE WE INDEED DID NOT NEED DESTRUCTOR
 
 void func::plot(ostream& os) const {
- 
+
   vector<int> sortImage;
     
   sortImage.clear();
   for ( auto it : fmap_){
     //complete code here: insert the image of the function into sortImage 
+      sortImage.push_back(it.second); 
   }
   //complete code here: sort sortImage
+  sort(sortImage.begin(), sortImage.end());
+
   //complete code here: flip sortImage (reverse)
+  reverse(sortImage.begin(), sortImage.end());
   
   for ( auto it_im = sortImage.begin();
        it_im != sortImage.end(); ++it_im) {
@@ -75,3 +87,10 @@ void func::plot(ostream& os) const {
   }
   os<<endl;
 }
+
+
+/*func& operator<<(const int& x) {
+    result = 
+
+
+}*/

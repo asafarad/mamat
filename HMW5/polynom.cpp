@@ -1,5 +1,13 @@
 #include "polynom.h"
 
+polynom::polynom(int n, int arr[]):
+    n_(n),
+    coefs_(arr)
+{
+
+
+}
+
 void polynom::printcoefs(ostream& os)  const {
   int allZero = 1;
   for (auto i = n_ ; i>=0; i--) {
