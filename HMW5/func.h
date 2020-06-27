@@ -33,8 +33,15 @@ class func {
       func();
 
       // CHECK if need to implement or pure virtual!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      virtual func& operator<<(const int& x) =0;
+      virtual func& operator<<(const int& x) = 0;
       ostream& operator<<(ostream&, const func&);
+
+      // need to declare pure vritual operators???????????????????????????????????????????????????
+      //virtual func operator+(const func&) = 0;
+      //virtual func operator-(const func&) = 0;
+     // virtual func operator*(const func&) = 0;
+      //virtual func Derivative() = 0;
+      //virtual func Integral() = 0;
 };
 
 #endif
