@@ -38,10 +38,6 @@ polynom polynom::operator*(const polynom& p2) const {
 
 }
 
-void polynom::print(ostream& os) const {
-
-}
-
 void polynom::printcoefs(ostream& os)  const {
   int allZero = 1;
   for (auto i = n_ ; i>=0; i--) {
