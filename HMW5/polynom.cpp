@@ -38,6 +38,18 @@ polynom polynom::operator*(const polynom& p2) const {
 
 }
 
+polynom polynom::Derivative() const {
+
+}
+
+polynom polynom::Integral() const {
+
+}
+
+polynom& polynom::operator<<(const int& x) {
+
+}
+
 void polynom::printcoefs(ostream& os)  const {
   int allZero = 1;
   for (auto i = n_ ; i>=0; i--) {
