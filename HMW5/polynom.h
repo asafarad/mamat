@@ -29,6 +29,7 @@ class polynom : public func {
 
   //Print Coeffs
   void printcoefs(ostream&) const ;
+
   
  
   
@@ -38,6 +39,8 @@ class polynom : public func {
 
   int n_; //order of the polynom
   int* coefs_; //coefficients 
+
+  polynom& decrease_degree(polynom&);
 };
 
 

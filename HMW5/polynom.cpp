@@ -19,19 +19,75 @@ polynom::polynom(const polynom& p) :
 }
 
 polynom::~polynom() {
-    delete[] coefs_;
+    delete [] coefs_;
 }
 
 polynom polynom::operator+(const polynom& p2) const {
-    polynom pRes(*this);
-    for (int i = 0; i <= pRes.n_; i++) {
-        pRes.coefs_[i] = coefs_[i] + p2.coefs_[1];
+    polynom bigger(*this);
+    int n_min, n_max;
+    
+    if (this->n_ < p2.n_) {
+        n_min = this->n_;
+        n_max = p2.n_;
+        bigger = p2;
     }
+    else {
+        n_min = p2.n_;
+        n_max = this->n_;
+        bigger = *this;
+    }
+
+    //We shall declare our result as the polynom with 
+    //the higher degree, and then add the coeffs of
+    //the lower degree polynom
+    for (int i = 0; i <= n_min; i++) {
+        bigger.coefs_[i] = coefs_[i] + p2.coefs_[i];
+    }
+    // CHECK-ASSIGNMENT OPERATOR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    int n_new = 0;
+    for (int i = n_max; i >= 0; i--) {
+        if (bigger.coefs_[i] != 0) {
+            n_new = i;
+            break;
+        }
+    }
+    polynom pRes(n_new, bigger.coefs_);
     return pRes;
 }
 
-polynom polynom::operator-(const polynom& p2) const {
+//IMPLEMENT ASSIGMENT OP//////////////////////////////////////////////////////////////////
 
+polynom polynom::operator-(const polynom& p2) const {
+    polynom bigger(*this);
+    int n_min, n_max;
+
+    if (this->n_ < p2.n_) {
+        n_min = this->n_;
+        n_max = p2.n_;
+        bigger = p2;
+    }
+    else {
+        n_min = p2.n_;
+        n_max = this->n_;
+        bigger = *this;
+    }
+
+    //We shall declare our result as the polynom with 
+    //the higher degree, and then add the coeffs of
+    //the lower degree polynom
+    for (int i = 0; i <= n_min; i++) {
+        bigger.coefs_[i] = coefs_[i] - p2.coefs_[i];
+    }
+    // CHECK-ASSIGNMENT OPERATOR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    int n_new;
+    for(int i = n_max; i >= 0; i--) {
+        if (bigger.coefs_[i] != 0) {
+            n_new = i;
+            break;
+        }
+    }
+    polynom pRes(n_new, bigger.coefs_);
+    return pRes;
 }
 
 polynom polynom::operator*(const polynom& p2) const {
