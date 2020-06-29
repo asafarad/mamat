@@ -3,11 +3,16 @@
 func::func() :
     maxVal_(-999999),
     minVal_(999999) {
-    //fmap_ = new map<int, int>(0, 0); ///////////CHECK WHETHER THIS WORKS WITHOUT EXPLICIT IMPLEMENTATION
     }
 
+func::~func() {
+    pass;
+}
 
-////////////////////MAKE SURE WE INDEED DID NOT NEED DESTRUCTOR
+func::func(const func& function): 
+    maxVal_(function.maxVal_),
+    minVal_(function.minVal_) {
+}
 
 void func::plot(ostream& os) const {
 
@@ -43,7 +48,7 @@ void func::plot(ostream& os) const {
       else 
 	os<<"  "<<*it_im;
     
-    for (auto it_dom /*complete code here: loop over map*/) {
+    for (auto it_dom : fmap_) {
       if(it_dom.second == *it_im){
 	int x=it_dom.first;
 	int spaces= x-x_anchor;
@@ -58,7 +63,7 @@ void func::plot(ostream& os) const {
 
     }
 
-    os<<endl;
+    os<< endl ;
     if((it_im+1)!=sortImage.end()){ //print empty lines
       int lines=*it_im-*(it_im+1)-1;
       int i=1;
@@ -94,3 +99,8 @@ void func::plot(ostream& os) const {
 
 
 }*/
+
+ostream& operator<<(ostream& os, const func& f) {
+    f.print(os);
+    return os;
+}

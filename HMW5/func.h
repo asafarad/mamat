@@ -1,23 +1,18 @@
-#ifndef _F
-#define _F
+#ifndef blah_F
+#define blah_F
 #include <map>
 #include <iostream>
 #include <vector>
 #include <algorithm>
 
+#define pass (void)0;
 
 
-using std::map;
-using std::ostream;
-using std::vector;
-using std::sort;
-using std::reverse;
+/// CHECK LATER WHICH STD's we can get rid of
+
+using namespace std;
 
 class func {
-
- 
-
-
 
  protected:
    
@@ -32,19 +27,26 @@ class func {
       //Constructor:
       func();
 
+      //Copy Constructor:
+      func(const func& function);
+
+      //Destructor:
+      virtual ~func();
+
       // CHECK if need to implement or pure virtual!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       virtual func& operator<<(const int& x) = 0;
-      friend ostream& operator<<(ostream& os, const func& f) {
-          os << f;
-          return os;
-      }
+      friend ostream& operator<<(ostream& os, const func& f);
+      virtual void print(ostream& os) const = 0;
+      friend class compfunc;
 
       // need to declare pure vritual operators???????????????????????????????????????????????????
       //virtual func operator+(const func&) = 0;
       //virtual func operator-(const func&) = 0;
-     // virtual func operator*(const func&) = 0;
+      //virtual func operator*(const func&) = 0;
       //virtual func Derivative() = 0;
       //virtual func Integral() = 0;
+
+
 };
 
 #endif

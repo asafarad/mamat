@@ -27,6 +27,9 @@ class polynom : public func {
   //Print to map
   virtual polynom& operator<<(const int& x);
 
+  //Print
+  void print(ostream& os) const;
+
   //Print Coeffs
   void printcoefs(ostream&) const ;
 

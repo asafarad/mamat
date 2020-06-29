@@ -58,7 +58,12 @@ polynom polynom::operator+(const polynom& p2) const {
 //IMPLEMENT ASSIGMENT OP//////////////////////////////////////////////////////////////////
 
 polynom polynom::operator-(const polynom& p2) const {
-    polynom bigger(*this);
+    polynom p2_neg(*this);
+    for (int i = 0; i <= p2_neg.n_; i++) {
+        p2_neg.coefs_[i] = (-1) * p2_neg.coefs_[i];
+    }
+    return (*this + p2_neg); // this - p2
+    /*polynom bigger(*this);
     int n_min, n_max;
 
     if (this->n_ < p2.n_) {
@@ -87,22 +92,87 @@ polynom polynom::operator-(const polynom& p2) const {
         }
     }
     polynom pRes(n_new, bigger.coefs_);
-    return pRes;
+    return pRes;*/
 }
 
 polynom polynom::operator*(const polynom& p2) const {
+    int n_res = n_ + p2.n_;
+    int* array = new int[n_res + 1];
+    array = { 0 };
+    polynom result(n_res, array);
+    for (int i = 0; i <= n_; i++) {
+        for (int j = 0; j <= p2.n_; j++) {
+            result.coefs_[i + j] = result.coefs_[i + j]
+                + coefs_[i] * p2.coefs_[j];
+        }
+    }
+
+    int n_new = 0;
+    for (int i = n_res; i >= 0; i--) {
+        if (result.coefs_[i] != 0) {
+            n_new = i;
+            break;
+        }
+    }
+    polynom pRes(n_new, result.coefs_);
+    delete[] array;
+    return pRes;
 
 }
 
 polynom polynom::Derivative() const {
+    int n_res = n_ - 1;
+    int* array = new int[n_res + 1];
+    array = { 0 };
+    polynom result(n_res, array);
 
+    for (int i = n_; i >= 1; i--) {
+        result.coefs_[i - 1] = i * result.coefs_[i];
+    }
+    delete[] array;
+    return result;
 }
 
 polynom polynom::Integral() const {
+    int n_res = n_ + 1;
+    int* array = new int[n_res + 1];
+    array = { 0 };
+    polynom result(n_res, array);
 
+    for (int i = n_; i >= 0; i--) {
+        result.coefs_[i + 1] = (1/(i+1)) * result.coefs_[i];
+    }
+    delete[] array;
+    return result;
 }
 
 polynom& polynom::operator<<(const int& x) {
+    
+
+    int y = 0;
+
+    for (int i = 0; i <= n_; i++) {        
+        y = y + coefs_[i] * (int)pow(x,i);
+    }
+
+    //Update max and min values of the object
+    maxVal_ = (y > maxVal_) ? y : maxVal_;
+    minVal_ = (y < minVal_) ? y : minVal_;
+
+    fmap_.insert(pair<int, int>(x, y));
+    return *this;
+}
+
+void polynom::print(ostream& os) const {
+    os << "q(x)-";
+    printcoefs(os); //////MAKE SURE IT ENDS THE LINE
+    polynom der = Derivative();
+    os << endl << "Derivative: ";
+    der.printcoefs(os);
+    polynom integ = Integral();
+    os << endl << "Integral: ";
+    integ.printcoefs(os);
+    plot(os);
 
 }
 
@@ -142,3 +212,4 @@ void polynom::printcoefs(ostream& os)  const {
     }
   }
 }
+
