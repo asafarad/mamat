@@ -18,12 +18,21 @@ polynom::polynom(const polynom& p) :
         coefs_[i] = p.coefs_[i];
 }
 
+polynom::polynom(int n) :
+    func(),
+    n_(n)
+{
+    coefs_ = new int[n + 1]; //alocate array of n+1 coeffs(0,...,n)
+    for (int i = 0; i <= n; i++)
+        coefs_[i] = 0;
+}
+
 polynom::~polynom() {
     delete [] coefs_;
 }
 
 polynom polynom::operator+(const polynom& p2) const {
-    polynom bigger(*this);
+    polynom bigger(n_);
     int n_min, n_max;
     
     if (this->n_ < p2.n_) {
@@ -97,9 +106,9 @@ polynom polynom::operator-(const polynom& p2) const {
 
 polynom polynom::operator*(const polynom& p2) const {
     int n_res = n_ + p2.n_;
-    int* array = new int[n_res + 1];
-    *array = { 0 };
-    polynom result(n_res, array);
+    //int* array = new int[n_res + 1];
+ 
+    polynom result(n_res);
     for (int i = 0; i <= n_; i++) {
         for (int j = 0; j <= p2.n_; j++) {
             result.coefs_[i + j] = result.coefs_[i + j]
@@ -115,7 +124,7 @@ polynom polynom::operator*(const polynom& p2) const {
         }
     }
     polynom pRes(n_new, result.coefs_);
-    delete[] array;
+    //delete[] array;
     return pRes;
 
 }
@@ -127,27 +136,27 @@ polynom polynom::Derivative() const {
         return result;
     }
     int n_res = n_ - 1;
-    int* array = new int[n_res + 1];
-    *array = { 0 };
-    polynom result(n_res, array);
+    //int* array = new int[n_res + 1];
+    //*array = { 0 };
+    polynom result(n_res);
 
     for (int i = n_; i >= 1; i--) {
         result.coefs_[i - 1] = i * coefs_[i];
     }
-    delete[] array;
+    //delete[] array;
     return result;
 }
 
 polynom polynom::Integral() const {
     int n_res = n_ + 1;
-    int* array = new int[n_res + 1];
-    *array = { 0 };
-    polynom result(n_res, array);
+    //int* array = new int[n_res + 1];
+    //*array = { 0 };
+    polynom result(n_res);
 
     for (int i = n_res; i >= 1; i--) {
         result.coefs_[i] = (coefs_[i-1]) / i;
     }
-    delete[] array;
+    //delete[] array;
     return result;
 }
 
@@ -176,8 +185,15 @@ void polynom::print(ostream& os) const {
     der.printcoefs(os);
     polynom integ = Integral();
     os << endl << "Integral: ";
-    integ.printcoefs(os);
-    os << "+C" << endl;
+
+    // Check whether evrything is zero
+    if (integ.n_ == 0 && coefs_[0] == 0)
+        os << "C" << endl;
+
+    else {
+        integ.printcoefs(os);
+        os << "+C" << endl;
+    }
     if (fmap_.size() != 0) {
         //os << endl;
         plot(os);
@@ -224,3 +240,18 @@ void polynom::printcoefs(ostream& os)  const {
   }
 }
 
+polynom& polynom::operator=(const polynom& other) {
+    if (coefs_ == other.coefs_)
+        return *this;
+
+    n_ = other.n_;
+
+    delete[] coefs_;
+
+    coefs_ = new int[n_ + 1];
+
+    for (int i = 0; i <= n_; i++) {
+        coefs_[i] = other.coefs_[i];
+    }
+    return *this;
+}

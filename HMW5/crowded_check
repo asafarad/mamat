@@ -1,0 +1,12 @@
+SetPolynom wow 2,1,0,8
+SetPolynom wowowowowo 2,1,0,-8
+SetPolynom simcha 4,1,0,1,6,8
+SetPolynom amit 4,1,0,1,8,9
+SetPolynom hodaya 9,1,0,1,10,2,6,8,0,4,11
+SetPolynom moshic_afia 0,2
+SetPolynom tzenzor 0,0
+SetPolynom alon_the_king 3,1,0,1,9
+SetPolynom song 5,1,2,3,4,5,9
+SetPolynom whaaaaattt 0,-5
+
+Print All

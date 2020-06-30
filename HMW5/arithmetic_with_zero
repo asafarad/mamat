@@ -1,0 +1,19 @@
+SetPolynom im_the_zero 0,0
+SetPolynom so_who_im 2,1,0,-6
+SetPolynom so_am_i 0,0
+SetPolynom yes 4,1,0,1,8,9
+SetPolynom no 4,1,0,-1,-8,-9
+SetPolynom maybe 4,-1,0,-1,-8,-9
+MathPolynom bad_idea no,+,so_who_im
+MathPolynom help_me im_the_zero,*,so_who_im
+MathPolynom hell_yea yes,+,no
+MathPolynom hell_no yes,+,maybe
+MathPolynom please_work hell_yea,-,so_am_i
+
+AddPoint im_the_zero 0,1,-1
+AddPoint so_who_im 0,1,-1,4,-4
+AddPoint so_am_i 1,-1,-3
+AddPoint help_me 4,1,-1,5
+AddPoint please_work 0,1,-1,5
+
+Print All

@@ -1,0 +1,18 @@
+SetPolynom a 1,1,5
+SetPolynom b 1,1,4
+SetPolynom c 4,1,0,1,6,9
+SetPolynom d 4,1,0,1,8,9
+SetPolynom zero 0,0
+
+SetCompFunc a(b) a,b
+SetCompFunc b(a) b,a
+SetCompFunc c(a) c,a
+SetCompFunc zero(a) zero,a
+SetCompFunc d(zero) d,zero
+
+AddPoint a(b) 0,1,-1
+AddPoint b(a) 0,1,-1,4,-4
+AddPoint zero(a) 0,1,-1
+AddPoint d(zero) 0,3,-5
+
+Print All

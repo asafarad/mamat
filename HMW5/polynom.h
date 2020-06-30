@@ -12,6 +12,8 @@ class polynom : public func {
   polynom(int n, int arr[]);
   //Copy Constructor
   polynom(const polynom& p);
+  //Constructor without coefs- default 0
+  polynom(int n);
   //Destructor
   ~polynom();
 
@@ -19,6 +21,7 @@ class polynom : public func {
   virtual polynom operator+(const polynom&) const;
   virtual polynom operator-(const polynom&) const;
   virtual polynom operator*(const polynom&) const;
+  virtual polynom& operator=(const polynom& other);
   
   //Derivative
   virtual polynom Derivative() const;

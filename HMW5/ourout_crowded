@@ -1,0 +1,40 @@
+alon_the_king(x)=9x^3+x^2+1
+Derivative: 27x^2+2x
+Integral: 2x^4+x+C
+
+amit(x)=9x^4+8x^3+x^2+1
+Derivative: 36x^3+24x^2+2x
+Integral: x^5+2x^4+x+C
+
+hodaya(x)=11x^9+4x^8+8x^6+6x^5+2x^4+10x^3+x^2+1
+Derivative: 99x^8+32x^7+48x^5+30x^4+8x^3+30x^2+2x
+Integral: x^10+x^7+x^6+2x^4+x+C
+
+moshic_afia(x)=2
+Derivative: 0
+Integral: 2x+C
+
+simcha(x)=8x^4+6x^3+x^2+1
+Derivative: 32x^3+18x^2+2x
+Integral: x^5+x^4+x+C
+
+song(x)=9x^5+5x^4+4x^3+3x^2+2x+1
+Derivative: 45x^4+20x^3+12x^2+6x+2
+Integral: x^6+x^5+x^4+x^3+x^2+x+C
+
+tzenzor(x)=0
+Derivative: 0
+Integral: C
+
+whaaaaattt(x)=-5
+Derivative: 0
+Integral: -5x+C
+
+wow(x)=8x^2+1
+Derivative: 16x
+Integral: 2x^3+x+C
+
+wowowowowo(x)=-8x^2+1
+Derivative: -16x
+Integral: -2x^3+x+C
+

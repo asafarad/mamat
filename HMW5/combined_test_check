@@ -1,0 +1,21 @@
+SetPolynom wow 2,1,0,6
+SetPolynom wowowowowo 2,1,0,-6
+SetPolynom simcha 4,1,0,1,6,6
+SetPolynom amit 4,1,0,1,8,9
+SetPolynom hodaya_rabinovitch 9,1,0,1,1,2,6,7,0,4,13
+SetPolynom moshic_afia 0,2
+SetPolynom tzenzor 0,0
+SetPolynom alon_the_king 3,1,0,1,5
+SetPolynom song 5,1,2,3,4,5,9
+SetPolynom whaaaaattt 0,-5
+MathPolynom bad_idea moshic_afia,+,song
+MathPolynom help_me bad_idea,*,bad_idea
+MathPolynom hell_yea alon_the_king,*,whaaaaattt
+MathPolynom please_work hodaya_rabinovitch,-,wowowowowo
+AddPoint wow 0,1,-1
+AddPoint wowowowowo 0,1,-1
+AddPoint hsimcha 1,-3
+AddPoint hell_yea 4,1,-1
+AddPoint please_work 0,1
+AddPoint bad_idea 0,1,-1
+Print All

@@ -1,0 +1,150 @@
+bad_idea(x)=-9x^4-8x^3-7x^2+2
+Derivative: -36x^3-24x^2-14x
+Integral: -x^5-2x^4-2x^3+2x+C
+
+hell_no(x)=0
+Derivative: 0
+Integral: C
+
+hell_yea(x)=2
+Derivative: 0
+Integral: 2x+C
+
+help_me(x)=0
+Derivative: 0
+Integral: C
+  0*     *        *  *  
+  -1  0  1  2  3  4  5
+
+im_the_zero(x)=0
+Derivative: 0
+Integral: C
+  0*  *  *  
+  -1  0  1
+
+maybe(x)=-9x^4-8x^3-x^2-1
+Derivative: -36x^3-24x^2-2x
+Integral: -x^5-2x^4-x+C
+
+no(x)=-9x^4-8x^3-x^2+1
+Derivative: -36x^3-24x^2-2x
+Integral: -x^5-2x^4+x+C
+
+please_work(x)=2
+Derivative: 0
+Integral: 2x+C
+  2*  *  *           *  
+  -1  0  1  2  3  4  5
+
+so_am_i(x)=0
+Derivative: 0
+Integral: C
+  0*     *     *  
+  -3 -2 -1  0  1
+
+so_who_im(x)=-6x^2+1
+Derivative: -12x
+Integral: -2x^3+x+C
+  1            *  
+  0
+ -1
+ -2
+ -3
+ -4
+ -5         *     *  
+ -6
+ -7
+ -8
+ -9
+-10
+-11
+-12
+-13
+-14
+-15
+-16
+-17
+-18
+-19
+-20
+-21
+-22
+-23
+-24
+-25
+-26
+-27
+-28
+-29
+-30
+-31
+-32
+-33
+-34
+-35
+-36
+-37
+-38
+-39
+-40
+-41
+-42
+-43
+-44
+-45
+-46
+-47
+-48
+-49
+-50
+-51
+-52
+-53
+-54
+-55
+-56
+-57
+-58
+-59
+-60
+-61
+-62
+-63
+-64
+-65
+-66
+-67
+-68
+-69
+-70
+-71
+-72
+-73
+-74
+-75
+-76
+-77
+-78
+-79
+-80
+-81
+-82
+-83
+-84
+-85
+-86
+-87
+-88
+-89
+-90
+-91
+-92
+-93
+-94
+-95*                       *  
+  -4 -3 -2 -1  0  1  2  3  4
+
+yes(x)=9x^4+8x^3+x^2+1
+Derivative: 36x^3+24x^2+2x
+Integral: x^5+2x^4+x+C
+
