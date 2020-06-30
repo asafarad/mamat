@@ -6,6 +6,8 @@
 #include <algorithm>
 
 #define pass (void)0;
+#define Inf 999999
+#define minusInf -999999
 
 
 /// CHECK LATER WHICH STD's we can get rid of

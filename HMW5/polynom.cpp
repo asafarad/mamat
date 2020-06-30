@@ -98,7 +98,7 @@ polynom polynom::operator-(const polynom& p2) const {
 polynom polynom::operator*(const polynom& p2) const {
     int n_res = n_ + p2.n_;
     int* array = new int[n_res + 1];
-    array = { 0 };
+    *array = { 0 };
     polynom result(n_res, array);
     for (int i = 0; i <= n_; i++) {
         for (int j = 0; j <= p2.n_; j++) {
@@ -121,13 +121,18 @@ polynom polynom::operator*(const polynom& p2) const {
 }
 
 polynom polynom::Derivative() const {
+    if (n_ == 0) {
+        int array[1] = { 0 };
+        polynom result(n_, array);
+        return result;
+    }
     int n_res = n_ - 1;
     int* array = new int[n_res + 1];
-    array = { 0 };
+    *array = { 0 };
     polynom result(n_res, array);
 
     for (int i = n_; i >= 1; i--) {
-        result.coefs_[i - 1] = i * result.coefs_[i];
+        result.coefs_[i - 1] = i * coefs_[i];
     }
     delete[] array;
     return result;
@@ -136,11 +141,11 @@ polynom polynom::Derivative() const {
 polynom polynom::Integral() const {
     int n_res = n_ + 1;
     int* array = new int[n_res + 1];
-    array = { 0 };
+    *array = { 0 };
     polynom result(n_res, array);
 
-    for (int i = n_; i >= 0; i--) {
-        result.coefs_[i + 1] = (1/(i+1)) * result.coefs_[i];
+    for (int i = n_res; i >= 1; i--) {
+        result.coefs_[i] = (coefs_[i-1]) / i;
     }
     delete[] array;
     return result;
@@ -156,15 +161,15 @@ polynom& polynom::operator<<(const int& x) {
     }
 
     //Update max and min values of the object
-    maxVal_ = (y > maxVal_) ? y : maxVal_;
-    minVal_ = (y < minVal_) ? y : minVal_;
+    maxVal_ = (x > maxVal_) ? x : maxVal_;
+    minVal_ = (x < minVal_) ? x : minVal_;
 
     fmap_.insert(pair<int, int>(x, y));
     return *this;
 }
 
 void polynom::print(ostream& os) const {
-    os << "q(x)-";
+    //os << "q(x)-";
     printcoefs(os); //////MAKE SURE IT ENDS THE LINE
     polynom der = Derivative();
     os << endl << "Derivative: ";
@@ -172,8 +177,14 @@ void polynom::print(ostream& os) const {
     polynom integ = Integral();
     os << endl << "Integral: ";
     integ.printcoefs(os);
-    plot(os);
-
+    os << "+C" << endl;
+    if (fmap_.size() != 0) {
+        //os << endl;
+        plot(os);
+    }
+    else {
+        pass;
+    }
 }
 
 void polynom::printcoefs(ostream& os)  const {

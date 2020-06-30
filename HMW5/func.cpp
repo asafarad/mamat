@@ -1,8 +1,8 @@
 #include "func.h"
 
 func::func() :
-    maxVal_(-999999),
-    minVal_(999999) {
+    maxVal_(minusInf),
+    minVal_(Inf) {
     }
 
 func::~func() {
@@ -103,4 +103,5 @@ void func::plot(ostream& os) const {
 ostream& operator<<(ostream& os, const func& f) {
     f.print(os);
     return os;
+
 }

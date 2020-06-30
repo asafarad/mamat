@@ -12,15 +12,26 @@ compfunc& compfunc::operator<<(const int& x) {
 	temp_res = inner->fmap_[x];
 	*outer << temp_res;
 	y = outer->fmap_[temp_res];
+	inner->fmap_.clear();
+	inner->minVal_ = Inf;
+	inner->maxVal_ = minusInf;
+	outer->fmap_.clear();
+	outer->minVal_ = Inf;
+	outer->maxVal_ = minusInf;
 
-	maxVal_ = (y > maxVal_) ? y : maxVal_;
-	minVal_ = (y < minVal_) ? y : minVal_;
+	maxVal_ = (x > maxVal_) ? x : maxVal_;
+	minVal_ = (x < minVal_) ? x : minVal_;
 
 	fmap_.insert(pair<int, int>(x, y));
 	return *this;
 
 }
 void compfunc::print(ostream& os) const {
-	os << "q(p)(x)=";
-	plot(os);
+	if (fmap_.size() != 0) {
+		os << endl;
+		plot(os);
+	}
+	else {
+		pass;
+	}
 }
