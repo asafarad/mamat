@@ -203,8 +203,7 @@ polynom& polynom::operator=(const polynom& other) {
 polynom polynom::Derivative() const {
     //if the polynom is constant- derivative is zero polynom
     if (n_ == 0) {
-        int array[1] = { 0 };
-        polynom result(n_, array);
+        polynom result(n_);
         return result;
     }
     //initial polynom with degree n-1
@@ -225,6 +224,11 @@ polynom polynom::Derivative() const {
   Return Value	:	result  - result polynom of the integral.
   */
 polynom polynom::Integral() const {
+    //if the polynom is allzero- integral is zero polynom
+    if ((n_ == 0) && (coefs_[0] == 0)) {
+        polynom result(n_);
+        return result;
+    }
     //initial polynom with degree n+1
     int n_res = n_ + 1;
     polynom result(n_res);

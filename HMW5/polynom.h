@@ -24,7 +24,7 @@ class polynom : public func {
   //Copy Constructor
   polynom(const polynom& p);
   //Constructor without coefs- default 0
-  polynom(int n = 0);
+  polynom(int n);
   //Destructor
   ~polynom();
 
