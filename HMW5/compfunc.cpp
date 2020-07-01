@@ -35,11 +35,8 @@ compfunc& compfunc::operator<<(const int& x) {
 */
 
 void compfunc::print(ostream& os) const {
+	os << endl;
 	if (fmap_.size() != 0) {
-		os << endl;
 		plot(os);
-	}
-	else {
-		pass;
 	}
 }

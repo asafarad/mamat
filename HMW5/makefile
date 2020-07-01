@@ -4,9 +4,10 @@ CXXLINK = $(CXX)
 LIBS =
 OBJS = compfunc.o func.o main.o polynom.o
 RM=rm -f
+TARGET = WolfraMamat
 
-WolfraMamat: $(OBJS) 
-	$(CXXLINK) $(CXXFLAGS) -o WolfraMamat $(OBJS) $(LIBS)
+$(TARGET): $(OBJS) 
+	$(CXXLINK) $(CXXFLAGS) -o $(TARGET) $(OBJS) $(LIBS)
 
 compfunc.o: compfunc.cpp compfunc.h func.h
 func.o: func.cpp func.h
@@ -14,7 +15,7 @@ main.o: main.cpp func.h polynom.h compfunc.h
 polynom.o: polynom.cpp polynom.h func.h
 
 clean:
-	$(RM) $(OBJS)
+	 $(RM) WolfraMamat *.o *.bak *~ "#"* core
 
 
 
