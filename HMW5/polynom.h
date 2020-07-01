@@ -1,3 +1,14 @@
+/*
+
+  File: polynom.h
+
+  Abstract:
+
+    Polynom handling interface
+
+*/
+
+
 #ifndef _POLY_F
 #define _POLY_F
 
@@ -13,7 +24,7 @@ class polynom : public func {
   //Copy Constructor
   polynom(const polynom& p);
   //Constructor without coefs- default 0
-  polynom(int n);
+  polynom(int n = 0);
   //Destructor
   ~polynom();
 
@@ -30,15 +41,11 @@ class polynom : public func {
   //Print to map
   virtual polynom& operator<<(const int& x);
 
-  //Print
+  //Print polynom according to the demands
   void print(ostream& os) const;
 
-  //Print Coeffs
+  //Print polynom as coeffs: a0+a1*x+...+an*x^n
   void printcoefs(ostream&) const ;
-
-  
- 
-  
 
 
   protected:
@@ -46,7 +53,7 @@ class polynom : public func {
   int n_; //order of the polynom
   int* coefs_; //coefficients 
 
-  polynom& decrease_degree(polynom&);
+  //polynom& decrease_degree(polynom&);
 };
 
 
