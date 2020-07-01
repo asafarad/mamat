@@ -1,6 +1,9 @@
 #include "compfunc.h"
 
 
+/**
+* @ brief The constructor of a complex function
+*/
 
 compfunc::compfunc(func& q, func& p): inner(&p), outer(&q) {
 
@@ -26,6 +29,11 @@ compfunc& compfunc::operator<<(const int& x) {
 	return *this;
 
 }
+
+/**
+* @ brief Plot the complex function
+*/
+
 void compfunc::print(ostream& os) const {
 	if (fmap_.size() != 0) {
 		os << endl;

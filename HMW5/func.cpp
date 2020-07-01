@@ -1,32 +1,54 @@
 #include "func.h"
 
+/**
+* @ brief The constructor of func (without parameters),
+* which only initializes maxVal and minVal
+*/
+
 func::func() :
     maxVal_(minusInf),
     minVal_(Inf) {
     }
 
+/**
+* @ brief The destructor of func, which
+* doesn't do anything
+*/
+
 func::~func() {
     pass;
 }
+
+/**
+* @ brief A copy constructor of func,
+* which sets maxVal and minVal to those
+* of the given function
+*/
 
 func::func(const func& function): 
     maxVal_(function.maxVal_),
     minVal_(function.minVal_) {
 }
 
+/**
+* @ brief plots f(x): creates an axis for
+* X and for Y and adds a star (*) wherever
+* f(x) = y
+*/
+
 void func::plot(ostream& os) const {
 
   vector<int> sortImage;
     
+
+  //Firstly, we shall insert into the vector sortImage
+  //All of the dots in the map, and then sort them
   sortImage.clear();
   for ( auto it : fmap_){
-    //complete code here: insert the image of the function into sortImage 
       sortImage.push_back(it.second); 
   }
-  //complete code here: sort sortImage
-  sort(sortImage.begin(), sortImage.end());
 
-  //complete code here: flip sortImage (reverse)
+  sort(sortImage.begin(), sortImage.end());
   reverse(sortImage.begin(), sortImage.end());
   
   for ( auto it_im = sortImage.begin();
@@ -37,6 +59,9 @@ void func::plot(ostream& os) const {
     }
   }
  
+  //Secondly, we shall iterate over the vector
+  //and "plot" as described on the brief each pair
+
   for (auto it_im = sortImage.begin();
        it_im != sortImage.end(); ++it_im) {
     int x_anchor=minVal_;
@@ -93,12 +118,11 @@ void func::plot(ostream& os) const {
   os<<endl;
 }
 
+/**
+* @ brief Print operator, prints the function
+f to the standard output
+*/
 
-/*func& operator<<(const int& x) {
-    result = 
-
-
-}*/
 
 ostream& operator<<(ostream& os, const func& f) {
     f.print(os);
