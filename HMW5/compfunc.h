@@ -7,7 +7,6 @@
 	Compfunc handling interface
 
 */
-
 #pragma once
 #ifndef _COMP_F
 #define _COMP_F

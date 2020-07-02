@@ -146,7 +146,6 @@ void func::plot(ostream& os) const {
   Return Value	:	os
   */
 
-
 ostream& operator<<(ostream& os, const func& f) {
     f.print(os);
     return os;
