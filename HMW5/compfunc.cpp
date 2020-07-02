@@ -1,9 +1,21 @@
+/*
+
+  File: func.cpp
+
+  Abstract:
+
+	Complex function handling implementation
+
+*/
 #include "compfunc.h"
 
-
-/**
-* @ brief The constructor of a complex function
-*/
+/*
+  Function Name	:	compfunc
+  Description	:	The constructor of a complex function
+  Parameters	:	q - out function
+					p - innter function
+  Return Value	:	Instantiation of compufunc class.
+  */
 
 compfunc::compfunc(func& q, func& p): inner(&p), outer(&q) {
 
@@ -30,9 +42,13 @@ compfunc& compfunc::operator<<(const int& x) {
 
 }
 
-/**
-* @ brief Plot the complex function
-*/
+/*
+  Function Name	:	plot
+  Description	:   Plots the complex function - prints the exisiting
+					pairs of (x,y) from the map
+  Parameters	:	os  - output ostream object to print to.
+  Return Value	:	None.
+  */
 
 void compfunc::print(ostream& os) const {
 	os << endl;

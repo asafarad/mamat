@@ -1,40 +1,59 @@
+/*
+
+  File: func.cpp
+
+  Abstract:
+
+    Func handling implementation
+
+*/
 #include "func.h"
 
-/**
-* @ brief The constructor of func (without parameters),
-* which only initializes maxVal and minVal
-*/
-
+/*
+  Function Name	:	func
+  Description	:	The constructor of func (without parameters),
+                    which only initializes maxVal and minVal
+  Parameters	:	None.
+  Return Value	:	Instantiation of func class.
+  */
 func::func() :
     maxVal_(minusInf),
     minVal_(Inf) {
     }
 
-/**
-* @ brief The destructor of func, which
-* doesn't do anything
-*/
+/*
+  Function Name	:	~func
+  Description	:   Destructor of func object.
+  Parameters	:	None.
+  Return Value	:	None.
+  */
 
 func::~func() {
     pass;
 }
 
-/**
-* @ brief A copy constructor of func,
-* which sets maxVal and minVal to those
-* of the given function
-*/
+/*
+  Function Name	:	func
+  Description	:	Copy constructor of func object
+                    which assigns maxVal and minVal
+                    according to the copied func
+  Parameters	:	function - func object to copy.
+  Return Value	:	Instantiation of func class.
+  */
 
 func::func(const func& function): 
     maxVal_(function.maxVal_),
     minVal_(function.minVal_) {
 }
 
-/**
-* @ brief plots f(x): creates an axis for
-* X and for Y and adds a star (*) wherever
-* f(x) = y
-*/
+/*
+  Function Name	:	plot
+  Description	:   plots f(x): creates an axis for
+                    x and for y and adds a star (*) wherever
+                    f(x) = y  
+  Parameters	:	os  - output ostream object to print to.
+  Return Value	:	None.
+  */
 
 void func::plot(ostream& os) const {
 
@@ -118,10 +137,14 @@ void func::plot(ostream& os) const {
   os<<endl;
 }
 
-/**
-* @ brief Print operator, prints the function
-f to the standard output
-*/
+/*
+  Function Name	:	operator<<
+  Description	:   The input operator << which prints the
+                    function to the standard output
+  Parameters	:	os  - reference to output ostream object
+                    f - reference to a func object
+  Return Value	:	os
+  */
 
 
 ostream& operator<<(ostream& os, const func& f) {
